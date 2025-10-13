@@ -29,7 +29,7 @@ export const Route = createFileRoute('/auth/')({
           queryFn: async () => await getMe(),
         }))
 
-      if (!user) {
+      if (user) {
         return redirect({
           to: '/',
         })
@@ -113,13 +113,19 @@ function Auth() {
 
               <AuthError message={loginError} isPending={isLoginPending} />
 
-              <Button type="submit" disabled={isLoginPending} className="w-full">
-                {
-                  isLoginPending ? <>
+              <Button
+                type="submit"
+                disabled={isLoginPending}
+                className="w-full"
+              >
+                {isLoginPending ? (
+                  <>
                     <Spinner />
                     Validando
-                  </> : 'Iniciar sesión'
-                }
+                  </>
+                ) : (
+                  'Iniciar sesión'
+                )}
               </Button>
             </form>
           </Form>

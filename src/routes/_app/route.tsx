@@ -1,3 +1,4 @@
+import { Sidebar } from '@/components/layout/Sidebar'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
@@ -30,7 +31,10 @@ export const Route = createFileRoute('/_app')({
 
 function RouteComponent() {
   return (
-    <main>
+    <main className='flex'>
+      <section>
+        <Sidebar />
+      </section>
       <section>
         <Outlet />
       </section>
