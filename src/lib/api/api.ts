@@ -55,7 +55,7 @@ const toApiError = (error: unknown): ApiError => {
         (status === 0
           ? 'Error de conexión'
           : 'Ha ocurrido un error inesperado'),
-      raw: ax.response,
+      raw: body,
     }
   }
 
@@ -114,6 +114,7 @@ api.interceptors.response.use(
         isRefreshing = false
       }
     }
+    return Promise.reject(toApiError(error))
   },
 )
 

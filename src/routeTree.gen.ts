@@ -13,6 +13,7 @@ import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppUsuariosRouteImport } from './routes/_app/usuarios'
+import { Route as AppSolicitudesRouteImport } from './routes/_app/solicitudes'
 import { Route as AppMisTareasRouteImport } from './routes/_app/mis-tareas'
 import { Route as AppCentroDeAsignacionesRouteImport } from './routes/_app/centro-de-asignaciones'
 import { Route as AppTablerosTableroRouteImport } from './routes/_app/tableros/$tablero'
@@ -36,6 +37,11 @@ const AppUsuariosRoute = AppUsuariosRouteImport.update({
   path: '/usuarios',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppSolicitudesRoute = AppSolicitudesRouteImport.update({
+  id: '/solicitudes',
+  path: '/solicitudes',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppMisTareasRoute = AppMisTareasRouteImport.update({
   id: '/mis-tareas',
   path: '/mis-tareas',
@@ -55,6 +61,7 @@ const AppTablerosTableroRoute = AppTablerosTableroRouteImport.update({
 export interface FileRoutesByFullPath {
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/mis-tareas': typeof AppMisTareasRoute
+  '/solicitudes': typeof AppSolicitudesRoute
   '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/mis-tareas': typeof AppMisTareasRoute
+  '/solicitudes': typeof AppSolicitudesRoute
   '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
@@ -73,6 +81,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteRouteWithChildren
   '/_app/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/_app/mis-tareas': typeof AppMisTareasRoute
+  '/_app/solicitudes': typeof AppSolicitudesRoute
   '/_app/usuarios': typeof AppUsuariosRoute
   '/_app/': typeof AppIndexRoute
   '/auth/': typeof AuthIndexRoute
@@ -83,6 +92,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/centro-de-asignaciones'
     | '/mis-tareas'
+    | '/solicitudes'
     | '/usuarios'
     | '/'
     | '/auth'
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
   to:
     | '/centro-de-asignaciones'
     | '/mis-tareas'
+    | '/solicitudes'
     | '/usuarios'
     | '/'
     | '/auth'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/_app/centro-de-asignaciones'
     | '/_app/mis-tareas'
+    | '/_app/solicitudes'
     | '/_app/usuarios'
     | '/_app/'
     | '/auth/'
@@ -141,6 +153,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsuariosRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/solicitudes': {
+      id: '/_app/solicitudes'
+      path: '/solicitudes'
+      fullPath: '/solicitudes'
+      preLoaderRoute: typeof AppSolicitudesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/mis-tareas': {
       id: '/_app/mis-tareas'
       path: '/mis-tareas'
@@ -168,6 +187,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteRouteChildren {
   AppCentroDeAsignacionesRoute: typeof AppCentroDeAsignacionesRoute
   AppMisTareasRoute: typeof AppMisTareasRoute
+  AppSolicitudesRoute: typeof AppSolicitudesRoute
   AppUsuariosRoute: typeof AppUsuariosRoute
   AppIndexRoute: typeof AppIndexRoute
   AppTablerosTableroRoute: typeof AppTablerosTableroRoute
@@ -176,6 +196,7 @@ interface AppRouteRouteChildren {
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppCentroDeAsignacionesRoute: AppCentroDeAsignacionesRoute,
   AppMisTareasRoute: AppMisTareasRoute,
+  AppSolicitudesRoute: AppSolicitudesRoute,
   AppUsuariosRoute: AppUsuariosRoute,
   AppIndexRoute: AppIndexRoute,
   AppTablerosTableroRoute: AppTablerosTableroRoute,

@@ -1,3 +1,4 @@
+import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
@@ -31,12 +32,13 @@ export const Route = createFileRoute('/_app')({
 
 function RouteComponent() {
   return (
-    <main className='flex'>
-      <section>
-        <Sidebar />
-      </section>
-      <section>
-        <Outlet />
+    <main className="flex">
+      <Sidebar />
+      <section className="flex flex-col flex-1 bg-gray-50">
+        <Navbar />
+        <div className='container mx-auto p-6'>
+          <Outlet />
+        </div>
       </section>
     </main>
   )
