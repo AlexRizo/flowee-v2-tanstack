@@ -27,6 +27,7 @@ export const Route = createFileRoute('/auth/')({
         (await context.queryClient.fetchQuery({
           queryKey: ['auth', 'user'],
           queryFn: async () => await getMe(),
+          retry: false,
         }))
 
       if (user) {

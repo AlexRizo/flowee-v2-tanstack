@@ -3,9 +3,12 @@ import { Button } from '../ui/button'
 import { Navlink } from './Navlink'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/useAuth'
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const { logoutMutate } = useAuth()
 
   return (
     <aside
@@ -92,7 +95,7 @@ export const Sidebar = () => {
           />
         </div>
         <div className="flex flex-col mt-auto">
-          <Button className="whitespace-nowrap">
+          <Button className="whitespace-nowrap" onClick={() => logoutMutate()}>
             <LogOut />
             {!isCollapsed && 'Cerrar sesión'}
           </Button>

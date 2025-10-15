@@ -15,7 +15,6 @@ export const Breadcrumbs: FC = () => {
 
   const paths = useMemo(() => {
     const segments = location.pathname.split('/').filter(Boolean)
-    console.log(segments)
     return segments
   }, [location.pathname])
 
