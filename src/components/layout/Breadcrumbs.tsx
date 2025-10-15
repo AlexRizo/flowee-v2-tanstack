@@ -19,7 +19,7 @@ export const Breadcrumbs: FC = () => {
   }, [location.pathname])
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className='mr-auto'>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
