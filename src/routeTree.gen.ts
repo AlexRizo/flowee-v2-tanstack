@@ -15,7 +15,10 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppUsuariosRouteImport } from './routes/_app/usuarios'
 import { Route as AppSolicitudesRouteImport } from './routes/_app/solicitudes'
 import { Route as AppMisTareasRouteImport } from './routes/_app/mis-tareas'
+import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
 import { Route as AppCentroDeAsignacionesRouteImport } from './routes/_app/centro-de-asignaciones'
+import { Route as AppAjustesRouteImport } from './routes/_app/ajustes'
+import { Route as AppTablerosIndexRouteImport } from './routes/_app/tableros/index'
 import { Route as AppTablerosTableroRouteImport } from './routes/_app/tableros/$tablero'
 
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -47,9 +50,24 @@ const AppMisTareasRoute = AppMisTareasRouteImport.update({
   path: '/mis-tareas',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppCuentaRoute = AppCuentaRouteImport.update({
+  id: '/cuenta',
+  path: '/cuenta',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppCentroDeAsignacionesRoute = AppCentroDeAsignacionesRouteImport.update({
   id: '/centro-de-asignaciones',
   path: '/centro-de-asignaciones',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAjustesRoute = AppAjustesRouteImport.update({
+  id: '/ajustes',
+  path: '/ajustes',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppTablerosIndexRoute = AppTablerosIndexRouteImport.update({
+  id: '/tableros/',
+  path: '/tableros/',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppTablerosTableroRoute = AppTablerosTableroRouteImport.update({
@@ -59,63 +77,81 @@ const AppTablerosTableroRoute = AppTablerosTableroRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/ajustes': typeof AppAjustesRoute
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
+  '/cuenta': typeof AppCuentaRoute
   '/mis-tareas': typeof AppMisTareasRoute
   '/solicitudes': typeof AppSolicitudesRoute
   '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/tableros': typeof AppTablerosIndexRoute
 }
 export interface FileRoutesByTo {
+  '/ajustes': typeof AppAjustesRoute
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
+  '/cuenta': typeof AppCuentaRoute
   '/mis-tareas': typeof AppMisTareasRoute
   '/solicitudes': typeof AppSolicitudesRoute
   '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/tableros': typeof AppTablerosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
+  '/_app/ajustes': typeof AppAjustesRoute
   '/_app/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
+  '/_app/cuenta': typeof AppCuentaRoute
   '/_app/mis-tareas': typeof AppMisTareasRoute
   '/_app/solicitudes': typeof AppSolicitudesRoute
   '/_app/usuarios': typeof AppUsuariosRoute
   '/_app/': typeof AppIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/_app/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/_app/tableros/': typeof AppTablerosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/ajustes'
     | '/centro-de-asignaciones'
+    | '/cuenta'
     | '/mis-tareas'
     | '/solicitudes'
     | '/usuarios'
     | '/'
     | '/auth'
     | '/tableros/$tablero'
+    | '/tableros'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/ajustes'
     | '/centro-de-asignaciones'
+    | '/cuenta'
     | '/mis-tareas'
     | '/solicitudes'
     | '/usuarios'
     | '/'
     | '/auth'
     | '/tableros/$tablero'
+    | '/tableros'
   id:
     | '__root__'
     | '/_app'
+    | '/_app/ajustes'
     | '/_app/centro-de-asignaciones'
+    | '/_app/cuenta'
     | '/_app/mis-tareas'
     | '/_app/solicitudes'
     | '/_app/usuarios'
     | '/_app/'
     | '/auth/'
     | '/_app/tableros/$tablero'
+    | '/_app/tableros/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -167,11 +203,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMisTareasRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/cuenta': {
+      id: '/_app/cuenta'
+      path: '/cuenta'
+      fullPath: '/cuenta'
+      preLoaderRoute: typeof AppCuentaRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/centro-de-asignaciones': {
       id: '/_app/centro-de-asignaciones'
       path: '/centro-de-asignaciones'
       fullPath: '/centro-de-asignaciones'
       preLoaderRoute: typeof AppCentroDeAsignacionesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/ajustes': {
+      id: '/_app/ajustes'
+      path: '/ajustes'
+      fullPath: '/ajustes'
+      preLoaderRoute: typeof AppAjustesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/tableros/': {
+      id: '/_app/tableros/'
+      path: '/tableros'
+      fullPath: '/tableros'
+      preLoaderRoute: typeof AppTablerosIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/tableros/$tablero': {
@@ -185,21 +242,27 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteRouteChildren {
+  AppAjustesRoute: typeof AppAjustesRoute
   AppCentroDeAsignacionesRoute: typeof AppCentroDeAsignacionesRoute
+  AppCuentaRoute: typeof AppCuentaRoute
   AppMisTareasRoute: typeof AppMisTareasRoute
   AppSolicitudesRoute: typeof AppSolicitudesRoute
   AppUsuariosRoute: typeof AppUsuariosRoute
   AppIndexRoute: typeof AppIndexRoute
   AppTablerosTableroRoute: typeof AppTablerosTableroRoute
+  AppTablerosIndexRoute: typeof AppTablerosIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppAjustesRoute: AppAjustesRoute,
   AppCentroDeAsignacionesRoute: AppCentroDeAsignacionesRoute,
+  AppCuentaRoute: AppCuentaRoute,
   AppMisTareasRoute: AppMisTareasRoute,
   AppSolicitudesRoute: AppSolicitudesRoute,
   AppUsuariosRoute: AppUsuariosRoute,
   AppIndexRoute: AppIndexRoute,
   AppTablerosTableroRoute: AppTablerosTableroRoute,
+  AppTablerosIndexRoute: AppTablerosIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

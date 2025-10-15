@@ -2,18 +2,23 @@ import type { FC } from 'react'
 import { Link } from '@tanstack/react-router'
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic'
 import type { LinkProps } from '@tanstack/react-router'
+import { cn } from '@/lib/utils'
 
 interface Props {
   to: LinkProps['to']
   icon: IconName
   label: string
+  collapsed: boolean
 }
 
-export const Navlink: FC<Props> = ({ to, icon, label }) => {
+export const Navlink: FC<Props> = ({ to, icon, label, collapsed }) => {
   return (
     <Link
       to={to}
-      className="flex items-center py-2 px-3 rounded hover:bg-violet-200 transition-colors"
+      className={cn(
+        'flex items-center gap-2 h-8.5 w-full overflow-hidden rounded hover:bg-violet-200 transition-colors px-2',
+        collapsed && 'justify-center px-0 gap-0',
+      )}
       activeProps={{ className: 'bg-violet-200' }}
       inactiveProps={{ className: 'bg-gray-100' }}
       activeOptions={{ exact: to === '/' ? true : false }}
@@ -23,9 +28,11 @@ export const Navlink: FC<Props> = ({ to, icon, label }) => {
           <DynamicIcon
             name={icon}
             strokeWidth={1.5}
-            className={`size-5 mr-2 transition-colors ${isActive ? 'text-violet-700' : 'text-black'}`}
+            className={`min-w-6 min-h-6 size-6 transition-colors ${isActive ? 'text-violet-700' : 'text-black'}`}
           />
-          <span className='text-sm'>{label}</span>
+          {!collapsed && (
+            <span className="text-sm whitespace-nowrap">{label}</span>
+          )}
         </>
       )}
     </Link>
