@@ -3,6 +3,7 @@ export interface Board {
   name: string
   prefix: string
   slug: string
+  color: string
   createdAt: string
   updatedAt: string
 }

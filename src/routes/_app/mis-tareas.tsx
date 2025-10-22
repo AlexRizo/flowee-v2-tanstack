@@ -1,3 +1,4 @@
+import { DndContainer } from '@/components/boards/DndContainer'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/mis-tareas')({
@@ -5,5 +6,9 @@ export const Route = createFileRoute('/_app/mis-tareas')({
 })
 
 function RouteComponent() {
-  return <div></div>
+  return (
+    <section className='h-full'>
+      <DndContainer />
+    </section>
+  )
 }
