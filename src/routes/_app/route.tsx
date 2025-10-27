@@ -36,7 +36,7 @@ function RouteComponent() {
       <Sidebar />
       <section className="flex flex-col flex-1 bg-gray-50">
         <Navbar />
-        <div className='container h-full mx-auto p-6'>
+        <div className="container flex flex-1 h-full mx-auto p-6 overflow-auto">
           <Outlet />
         </div>
       </section>
