@@ -7,3 +7,10 @@ export interface Board {
   createdAt: string
   updatedAt: string
 }
+
+export interface CreateBoardDto {
+  name: string
+  prefix: string
+  slug: string
+  color: string
+} 

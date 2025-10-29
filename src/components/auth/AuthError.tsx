@@ -7,12 +7,10 @@ interface AuthErrorProps {
 
 export const AuthError: FC<AuthErrorProps> = ({ message, isPending }) => {
   return (
-    message && (
-      <p
-        className={`text-sm text-red-500 overflow-hidden transition-all max-h-0 text-center ${!isPending  && 'animate-shake max-h-5'}`}
-      >
-        {message}
-      </p>
-    )
+    <p
+      className={`text-sm text-red-500 overflow-hidden max-h-0 opacity-0 transition-[max-height_opacity] duration-300 text-center ${!isPending && 'animate-shake max-h-20 opacity-100'}`}
+    >
+      {message}
+    </p>
   )
 }
