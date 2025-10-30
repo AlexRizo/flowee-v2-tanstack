@@ -1,5 +1,5 @@
 import type { ApiError } from '@/lib/api/api'
-import { createBoard as apiCreateBoard, getAllBoards } from '@/lib/api/boards'
+import { createBoard as apiCreateBoard, deleteBoard as apiDeleteBoard, getAllBoards } from '@/lib/api/boards'
 import type {
   Board,
   CreateBoardDto,
@@ -32,5 +32,17 @@ export const useAdminBoards = () => {
     },
   })
 
-  return { boards, createBoard }
+  const deleteBoard = useMutation<void, ApiError, string>({
+    mutationKey: ['boards'],
+    mutationFn: apiDeleteBoard,
+    onSuccess: (_, boardId) => {
+      queryClient.setQueryData<Board[]>(['boards'], (oldBoards) => {
+        if (!oldBoards) return []
+        return oldBoards.filter((board) => board.id !== boardId)
+      })
+      queryClient.invalidateQueries({ queryKey: ['my-boards'] })
+    },
+  })
+
+  return { boards, createBoard, deleteBoard }
 }

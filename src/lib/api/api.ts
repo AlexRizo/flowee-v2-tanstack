@@ -140,3 +140,11 @@ export const apiPatch = async <T, B = unknown>(
   const { data } = await api.patch<T>(url, body, cfg)
   return data
 }
+
+export const apiDelete = async <T = unknown>(
+  url: string,
+  cfg?: any,
+): Promise<T> => {
+  const { data } = await api.delete<T>(url, cfg)
+  return data
+}

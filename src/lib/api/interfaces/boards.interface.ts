@@ -13,4 +13,4 @@ export interface CreateBoardDto {
   prefix: string
   slug: string
   color: string
-} 
+}

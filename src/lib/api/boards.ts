@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from './api'
+import { apiDelete, apiGet, apiPost } from './api'
 import type { Board, CreateBoardDto } from './interfaces/boards.interface'
 
 export const getMyBoards = async () => {
@@ -12,4 +12,8 @@ export const getAllBoards = async () => {
 
 export const createBoard = async (board: CreateBoardDto) => {
   return await apiPost<Board>('/boards', board)
+}
+
+export const deleteBoard = async(boardId: string) => {
+  return await apiDelete<void>(`/boards/${boardId}`)
 }

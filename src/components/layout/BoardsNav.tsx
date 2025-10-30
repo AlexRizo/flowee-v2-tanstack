@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import type { ApiError } from '@/lib/api/api'
 import { useBoardStore } from '@/store/boardStore'
 import { cn } from '@/lib/utils'
+import { getContrastColor } from '@/helpers/getContrastColor'
 
 export const BoardsNav = () => {
   const {
@@ -46,10 +47,11 @@ export const BoardsNav = () => {
         <button
           key={board.id}
           className={cn(
-            'text-xs text-white font-medium size-7 rounded-full flex items-center justify-center cursor-pointer transition-all',
+            'text-xs font-medium size-7 rounded-full flex items-center justify-center cursor-pointer transition-all',
             selectedBoardId === board.id
               ? 'ring-2 ring-offset-2 ring-indigo-500 animate-tada'
               : 'opacity-70 hover:opacity-100',
+            getContrastColor(board.color),
           )}
           style={{ background: board.color }}
           title={board.name}
