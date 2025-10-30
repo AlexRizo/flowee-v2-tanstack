@@ -7,13 +7,13 @@ export const getMyBoards = async () => {
 
 // ? Este método es para usuarios administradores
 export const getAllBoards = async () => {
-  return await apiGet<Board[]>(`/boards`)
+  return await apiGet<Board[]>('/boards')
 }
 
 export const createBoard = async (board: CreateBoardDto) => {
   return await apiPost<Board>('/boards', board)
 }
 
-export const deleteBoard = async(boardId: string) => {
+export const deleteBoard = async (boardId: string) => {
   return await apiDelete<void>(`/boards/${boardId}`)
 }

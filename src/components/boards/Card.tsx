@@ -1,5 +1,5 @@
 import type { Priority, TaskType as TaskTp } from '@/lib/api/interfaces/tasks.interface'
-import type { User } from '@/lib/interfaces/user.interface'
+import type { User } from '@/lib/api/interfaces/users.interface'
 import type { FC } from 'react'
 import { TaskBoard } from './card/TaskBoard'
 import type { Board } from '@/lib/api/interfaces/boards.interface'
