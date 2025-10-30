@@ -13,3 +13,11 @@ export interface User {
   updatedAt: string
   boards?: Board[] 
 }
+
+export interface CreateUserDto {
+  name: string
+  email: string
+  username: string
+  password: string
+  role: Role
+}

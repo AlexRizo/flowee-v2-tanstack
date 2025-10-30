@@ -25,7 +25,7 @@ export const useAdminBoards = () => {
     onSuccess: (board) => {
       queryClient.setQueryData<Board[]>(['boards'], (oldBoards) => {
         if (!oldBoards) return [board]
-        return [...oldBoards, board]
+        return [board, ...oldBoards]
       })
 
       queryClient.invalidateQueries({ queryKey: ['my-boards'] })

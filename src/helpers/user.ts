@@ -10,7 +10,7 @@ enum EspRole {
   READER = 'Lector',
   DESIGNER_ADMIN = 'Gerente de Diseño',
   DESIGNER = 'Diseñador',
-  PUBLISHER_ADMIN = 'Gerente de Solicitudes',
+  PUBLISHER_ADMIN = 'Gerente de Solicitantes',
   PUBLISHER = 'Solicitante',
   UNDEFINED = 'Desconocido',
 }

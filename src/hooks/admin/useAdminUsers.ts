@@ -1,7 +1,7 @@
 import type { ApiError } from '@/lib/api/api'
-import type { User } from '@/lib/api/interfaces/users.interface'
-import { getUsers } from '@/lib/api/users'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import type { CreateUserDto, User } from '@/lib/api/interfaces/users.interface'
+import { getUsers, createUser as createUserApi } from '@/lib/api/users'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useAdminUsers = () => {
   const queryClient = useQueryClient()
@@ -15,5 +15,16 @@ export const useAdminUsers = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 
-  return { users }
+  const createUser = useMutation<User, ApiError, CreateUserDto>({
+    mutationKey: ['users'],
+    mutationFn: createUserApi,
+    onSuccess: (user) => {
+      queryClient.setQueryData<User[]>(['users'], (oldUsers) => {
+        if (!oldUsers) return [user]
+        return [user, ...oldUsers]
+      })
+    },
+  })
+
+  return { users, createUser }
 }

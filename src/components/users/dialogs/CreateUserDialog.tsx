@@ -1,3 +1,4 @@
+import { FormError } from '@/components/global/FormError'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -18,41 +19,42 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Plus } from 'lucide-react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useAdminBoards } from '@/hooks/admin/useAdminBoards'
-import { createBoardSchema } from './schemas/board.schemas'
-import { useEffect, useMemo, useState } from 'react'
-import { FormError } from '@/components/global/FormError'
 import { Spinner } from '@/components/ui/spinner'
+import { Plus } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { createUserSchema } from './schemas/user.schema'
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAdminUsers } from '@/hooks/admin/useAdminUsers'
+import { SelectRole } from '../inputs/SelectRole'
 
-export const CreateBoardDialog = () => {
-  const form = useForm<z.infer<typeof createBoardSchema>>({
+export const CreateUserDialog = () => {
+  const form = useForm<z.infer<typeof createUserSchema>>({
     defaultValues: {
       name: '',
-      slug: '',
-      prefix: '',
-      color: '#000000',
+      email: '',
+      username: '',
+      password: '',
+      role: undefined,
     },
-    resolver: zodResolver(createBoardSchema),
+    resolver: zodResolver(createUserSchema),
   })
 
-  const { createBoard } = useAdminBoards()
+  const { createUser } = useAdminUsers()
 
   const { mutate, isPending, error, isSuccess, reset } = useMemo(
     () => ({
-      mutate: createBoard.mutate,
-      isPending: createBoard.isPending,
-      error: createBoard.error,
-      isSuccess: createBoard.isSuccess,
-      reset: createBoard.reset,
+      mutate: createUser.mutate,
+      isPending: createUser.isPending,
+      error: createUser.error,
+      isSuccess: createUser.isSuccess,
+      reset: createUser.reset,
     }),
-    [createBoard.isPending, createBoard.error, createBoard.isSuccess],
+    [createUser.isPending, createUser.error, createUser.isSuccess],
   )
 
-  const onSubmit = (data: z.infer<typeof createBoardSchema>) => mutate(data)
+  const onSubmit = (data: z.infer<typeof createUserSchema>) => mutate(data)
 
   const [open, setOpen] = useState(false)
 
@@ -78,9 +80,9 @@ export const CreateBoardDialog = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button>
           <Plus />
-          Crear Tablero
+          Crear Usuario
         </Button>
       </DialogTrigger>
 
@@ -88,9 +90,9 @@ export const CreateBoardDialog = () => {
         <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <DialogHeader>
-              <DialogTitle>Crea un nuevo tablero</DialogTitle>
+              <DialogTitle>Crea un nuevo usuario</DialogTitle>
               <DialogDescription>
-                Ingresa los datos del nuevo tablero a continuación.
+                Ingresa los datos del nuevo usuario a continuación.
               </DialogDescription>
             </DialogHeader>
             <FormField
@@ -108,12 +110,12 @@ export const CreateBoardDialog = () => {
             />
             <FormField
               control={form.control}
-              name="slug"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Slug</FormLabel>
+                  <FormLabel>Correo electrónico</FormLabel>
                   <FormControl>
-                    <Input placeholder="Slug" {...field} />
+                    <Input placeholder="ejemplo@email.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,12 +123,12 @@ export const CreateBoardDialog = () => {
             />
             <FormField
               control={form.control}
-              name="prefix"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Prefijo</FormLabel>
+                  <FormLabel>Nombre de usuario</FormLabel>
                   <FormControl>
-                    <Input placeholder="PX" {...field} maxLength={2} />
+                    <Input placeholder="usuario-01" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,12 +136,29 @@ export const CreateBoardDialog = () => {
             />
             <FormField
               control={form.control}
-              name="color"
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Color</FormLabel>
+                  <FormLabel>Contraseña</FormLabel>
                   <FormControl>
-                    <Input type="color" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="**********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rol</FormLabel>
+                  <FormControl>
+                    <SelectRole value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
