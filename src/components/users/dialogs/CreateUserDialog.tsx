@@ -165,7 +165,7 @@ export const CreateUserDialog = () => {
               )}
             />
             <FormError
-              title="Error al crear el tablero"
+              title="Error al crear el usuario"
               error={error?.details ?? error?.message}
               isPending={isPending}
             />
@@ -182,7 +182,7 @@ export const CreateUserDialog = () => {
                     Creando...
                   </>
                 ) : (
-                  'Crear Tablero'
+                  'Crear usuario'
                 )}
               </Button>
             </DialogFooter>

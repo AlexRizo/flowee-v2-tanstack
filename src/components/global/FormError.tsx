@@ -21,7 +21,7 @@ export const FormError: FC<Props> = ({
     <Alert
       variant="destructive"
       className={cn(
-        'transition-[height_max-height_opacity]',
+        'transition-[height_max-height_opacity] border-red-500 bg-red-50/50',
         !!error && !isPending
           ? 'max-h-96 opacity-100'
           : 'max-h-0 overflow-hidden my-0 py-0 opacity-0',
