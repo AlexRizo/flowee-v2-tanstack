@@ -14,9 +14,12 @@ function RouteComponent() {
 
   useEffect(() => {
     if (boards.error) {
-      toast.error(boards.error.message)
+      toast.error('Error al cargar los tableros', {
+        description: boards.error?.message,
+        descriptionClassName: '!text-neutral-500',
+      })
     }
-  }, [boards])
+  }, [boards.error])
 
   return (
     <section className="w-full">

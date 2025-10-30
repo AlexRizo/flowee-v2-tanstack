@@ -30,7 +30,7 @@ export const useAuth = () => {
   } = useMutation<{ message: string }, ApiError>({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ['auth', 'user'] })
+      queryClient.clear()
       navigate({ to: '/auth' })
     },
     onError: (error) => {

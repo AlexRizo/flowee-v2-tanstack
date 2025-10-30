@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { CreateUserDialog } from '@/components/users/dialogs/CreateUserDialog'
 import { UsersTable } from '@/components/users/UsersTable'
 import { useAdminUsers } from '@/hooks/admin/useAdminUsers'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_app/usuarios')({
   component: RouteComponent,
@@ -9,6 +11,15 @@ export const Route = createFileRoute('/_app/usuarios')({
 
 function RouteComponent() {
   const { users } = useAdminUsers()
+
+  useEffect(() => {
+    if (users.error) {
+      toast.error('Error al cargar los usuarios', {
+        description: users.error?.message,
+        descriptionClassName: '!text-neutral-500'
+      })
+    }
+  }, [users.error])
 
   return (
     <section className="w-full">

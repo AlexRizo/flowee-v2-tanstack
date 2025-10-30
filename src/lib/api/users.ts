@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "./api"
+import { apiDelete, apiGet, apiPost } from "./api"
 import type { CreateUserDto, User } from "./interfaces/users.interface"
 
 export const getUsers = async () => {
@@ -7,4 +7,8 @@ export const getUsers = async () => {
 
 export const createUser = async (user: CreateUserDto) => {
   return await apiPost<User>('/users', user)
+}
+
+export const deleteUser = async (userId: string) => {
+  return await apiDelete<void>(`/users/${userId}`)
 }
