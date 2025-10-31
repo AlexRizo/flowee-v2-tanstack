@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { useEffect, useMemo } from 'react'
-import { updateUserSchema } from './schemas/user.schema'
+import { updateUserSchema } from './schemas/user.schemas'
 import { useForm } from 'react-hook-form'
 import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
