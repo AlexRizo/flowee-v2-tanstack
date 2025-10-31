@@ -19,6 +19,7 @@ import { getUserRole, getUserStatus } from '@/helpers/user'
 import { Button } from '../ui/button'
 import { Edit, Trash } from 'lucide-react'
 import { DeleteUserDialog } from './dialogs/DeleteUserDialog'
+import { UpdateUserDialog } from './dialogs/UpdateUserDialog'
 
 interface Props {
   users: User[]
@@ -58,6 +59,7 @@ export const UsersTable: FC<Props> = ({ users }) => {
   })
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false)
 
   const [handleUser, setHandleUser] = useState<User | null>(null)
 
@@ -95,7 +97,14 @@ export const UsersTable: FC<Props> = ({ users }) => {
                 </TableCell>
               ))}
               <TableCell className="text-center space-x-1">
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setHandleUser(row.original)
+                    setUpdateDialogOpen(true)
+                  }}
+                >
                   <Edit />
                 </Button>
                 <Button
@@ -118,6 +127,11 @@ export const UsersTable: FC<Props> = ({ users }) => {
         id={handleUser?.id}
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}
+      />
+      <UpdateUserDialog
+        user={handleUser}
+        open={updateDialogOpen}
+        onOpenChange={setUpdateDialogOpen}
       />
     </>
   )

@@ -11,7 +11,7 @@ import { getUserRole } from '@/helpers/user'
 import { Role } from '@/lib/api/interfaces/auth.interface'
 
 interface Props {
-  value: Role
+  value?: Role
   onChange: (value: Role) => void
 }
 

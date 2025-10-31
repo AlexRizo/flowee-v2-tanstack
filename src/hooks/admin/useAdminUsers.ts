@@ -1,9 +1,14 @@
 import type { ApiError } from '@/lib/api/api'
-import type { CreateUserDto, User } from '@/lib/api/interfaces/users.interface'
+import type {
+  CreateUserDto,
+  UpdateUserDto,
+  User,
+} from '@/lib/api/interfaces/users.interface'
 import {
   getUsers,
   createUser as createUserApi,
   deleteUser as deleteUserApi,
+  updateUser as updateUserApi,
 } from '@/lib/api/users'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -31,6 +36,17 @@ export const useAdminUsers = () => {
     },
   })
 
+  const updateUser = useMutation<User, ApiError, UpdateUserDto>({
+    mutationKey: ['users'],
+    mutationFn: updateUserApi,
+    onSuccess: (user) => {
+      queryClient.setQueryData<User[]>(['users'], (oldUsers) => {
+        if (!oldUsers) return []
+        return oldUsers.map((u) => (u.id === user.id ? user : u))
+      })
+    },
+  })
+
   const deleteUser = useMutation<void, ApiError, string>({
     mutationKey: ['users'],
     mutationFn: deleteUserApi,
@@ -42,5 +58,5 @@ export const useAdminUsers = () => {
     },
   })
 
-  return { users, createUser, deleteUser }
+  return { users, createUser, deleteUser, updateUser }
 }

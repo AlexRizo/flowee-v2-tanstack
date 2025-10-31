@@ -1,5 +1,5 @@
-import { Role } from "./auth.interface"
-import type { Board } from "./boards.interface"
+import { Role } from './auth.interface'
+import type { Board } from './boards.interface'
 
 export interface User {
   id: string
@@ -11,7 +11,7 @@ export interface User {
   role: Role
   createdAt: string
   updatedAt: string
-  boards?: Board[] 
+  boards?: Board[]
 }
 
 export interface CreateUserDto {
@@ -20,4 +20,8 @@ export interface CreateUserDto {
   username: string
   password: string
   role: Role
+}
+
+export interface UpdateUserDto extends Partial<CreateUserDto> {
+  id: string
 }

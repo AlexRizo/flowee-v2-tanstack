@@ -8,7 +8,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Form,
@@ -20,47 +19,71 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
-import { Plus } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
-import { createUserSchema } from './schemas/user.schema'
+import { useEffect, useMemo } from 'react'
+import { updateUserSchema } from './schemas/user.schema'
 import { useForm } from 'react-hook-form'
 import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAdminUsers } from '@/hooks/admin/useAdminUsers'
 import { SelectRole } from '../inputs/SelectRole'
+import type { User } from '@/lib/api/interfaces/users.interface'
+import { toast } from 'sonner'
 
-export const CreateUserDialog = () => {
-  const form = useForm<z.infer<typeof createUserSchema>>({
+interface Props {
+  user: User | null
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export const UpdateUserDialog = ({ user, open, onOpenChange }: Props) => {
+  const form = useForm<z.infer<typeof updateUserSchema>>({
     defaultValues: {
-      name: '',
-      email: '',
-      username: '',
-      password: '',
-      role: undefined,
+      name: user?.name ?? '',
+      email: user?.email ?? '',
+      username: user?.username ?? '',
+      password: undefined,
+      role: user?.role ?? undefined,
     },
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(updateUserSchema),
   })
 
-  const { createUser } = useAdminUsers()
+  const { updateUser } = useAdminUsers()
 
   const { mutate, isPending, error, isSuccess, reset } = useMemo(
     () => ({
-      mutate: createUser.mutate,
-      isPending: createUser.isPending,
-      error: createUser.error,
-      isSuccess: createUser.isSuccess,
-      reset: createUser.reset,
+      mutate: updateUser.mutate,
+      isPending: updateUser.isPending,
+      error: updateUser.error,
+      isSuccess: updateUser.isSuccess,
+      reset: updateUser.reset,
     }),
-    [createUser.isPending, createUser.error, createUser.isSuccess],
+    [updateUser.isPending, updateUser.error, updateUser.isSuccess],
   )
 
-  const onSubmit = (data: z.infer<typeof createUserSchema>) => mutate(data)
+  const onSubmit = (data: z.infer<typeof updateUserSchema>) => {
+    if (!user) {
+      toast.error('No se pudo actualizar el usuario.', {
+        description: 'Se esperaba un id válido.',
+        descriptionClassName: '!text-neutral-500',
+      })
+      return
+    }
 
-  const [open, setOpen] = useState(false)
+    mutate({
+      id: user.id,
+      ...data,
+    })
+  }
+
+  useEffect(() => {
+    if (user) {
+      form.reset(user)
+    }
+  }, [user])
 
   useEffect(() => {
     if (isSuccess) {
-      setOpen(false)
+      onOpenChange(false)
       form.reset()
     }
   }, [isSuccess, form])
@@ -69,7 +92,7 @@ export const CreateUserDialog = () => {
     <Dialog
       open={open}
       onOpenChange={(open) => {
-        setOpen(open)
+        onOpenChange(open)
         if (open) {
           form.reset()
         } else {
@@ -79,20 +102,15 @@ export const CreateUserDialog = () => {
         }
       }}
     >
-      <DialogTrigger asChild>
-        <Button>
-          <Plus />
-          Crear Usuario
-        </Button>
-      </DialogTrigger>
-
       <Form {...form}>
         <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <DialogHeader>
-              <DialogTitle>Crea un nuevo usuario</DialogTitle>
+              <DialogTitle>Editar usuario</DialogTitle>
               <DialogDescription>
-                Ingresa los datos del nuevo usuario a continuación.
+                Ingresa los nuevos datos del usuario{' '}
+                <span className="font-medium">{user?.name}</span> a
+                continuación.
               </DialogDescription>
             </DialogHeader>
             <FormField
@@ -165,7 +183,7 @@ export const CreateUserDialog = () => {
               )}
             />
             <FormError
-              title="Error al crear el usuario"
+              title="Error al actualizar el usuario"
               error={error?.details ?? error?.message}
               isPending={isPending}
             />
@@ -179,10 +197,10 @@ export const CreateUserDialog = () => {
                 {isPending ? (
                   <>
                     <Spinner />
-                    Creando...
+                    Actualizando...
                   </>
                 ) : (
-                  'Crear usuario'
+                  'Actualizar usuario'
                 )}
               </Button>
             </DialogFooter>
