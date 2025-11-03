@@ -30,10 +30,10 @@ export interface Task {
   status: TaskStatus
   type: TaskType
   priority: Priority
-  dueDate: string
   board: Board
   assignedTo: User
   author: User
+  dueDate: string
   createdAt: string
   updatedAt: string
   printTask?: any
@@ -46,3 +46,22 @@ interface specialTask {
   size: string
   legals: string
 }
+
+export interface CreateTaskBaseDTO {
+  title: string
+  description: string
+  type: TaskType
+  priority: Priority
+  status?: TaskStatus
+  dueDate: string
+  boardId: string
+  assignedToId: string
+  authorId?: string
+}
+
+export interface CreateSpecialTaskDTO extends CreateTaskBaseDTO {
+  size: string
+  legals: string
+}
+
+export interface UpdateSpecialTaskDTO extends Partial<CreateSpecialTaskDTO> {}
