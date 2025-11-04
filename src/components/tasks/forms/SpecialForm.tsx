@@ -21,7 +21,7 @@ import { SelectTaskPriority } from './inputs/SelectTaskPriority'
 import { SelectBoard } from '@/components/boards/inputs/SelectBoard'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, type FC } from 'react'
-import type { CreateSpecialTaskDTO } from '@/lib/api/interfaces/tasks.interface'
+import type { CreateSpecialTaskDTO, TaskType } from '@/lib/api/interfaces/tasks.interface'
 import { Textarea } from '@/components/ui/textarea'
 import { ReviewTask } from './ReviewTask'
 
@@ -30,6 +30,7 @@ interface Props {
   setStep: (step: number) => void
   specialTask: CreateSpecialTaskDTO
   updateSpecialTask: (data: Partial<CreateSpecialTaskDTO>) => void
+  taskType: TaskType | null
 }
 
 export const SpecialForm: FC<Props> = (props) => {
@@ -42,7 +43,7 @@ export const SpecialForm: FC<Props> = (props) => {
       ) : props.step === 4 ? (
         <TechnicalDetails {...props} />
       ) : props.step === 5 ? (
-        <ReviewTask setStep={props.setStep} specialTask={props.specialTask} />
+        <ReviewTask setStep={props.setStep} specialTask={props.specialTask} taskType={props.taskType} />
       ) : null}
     </>
   )

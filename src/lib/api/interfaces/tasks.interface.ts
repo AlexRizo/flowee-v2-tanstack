@@ -31,7 +31,7 @@ export interface Task {
   type: TaskType
   priority: Priority
   board: Board
-  assignedTo: User
+  assignedTo?: User
   author: User
   dueDate: string
   createdAt: string
@@ -55,7 +55,7 @@ export interface CreateTaskBaseDTO {
   status?: TaskStatus
   dueDate: string | Date
   boardId: string
-  assignedToId: string
+  assignedToId?: string
   authorId?: string
   referenceFiles?: File[]
   requiredFiles?: File[]

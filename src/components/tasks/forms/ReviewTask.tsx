@@ -1,17 +1,32 @@
 import { Button } from '@/components/ui/button'
-import type { CreateSpecialTaskDTO } from '@/lib/api/interfaces/tasks.interface'
+import { useTasks } from '@/hooks/useTasks'
+import {
+  TaskType,
+  type CreateSpecialTaskDTO,
+} from '@/lib/api/interfaces/tasks.interface'
 import { SquarePen } from 'lucide-react'
 import { useEffect, type FC } from 'react'
 
 interface Props {
   setStep: (step: number) => void
+  taskType: TaskType | null
   specialTask: CreateSpecialTaskDTO
 }
 
-export const ReviewTask: FC<Props> = ({ setStep, specialTask }) => {
+export const ReviewTask: FC<Props> = ({ setStep, specialTask, taskType }) => {
+  const { createSpecialTask } = useTasks({})
+
   useEffect(() => {
     console.log('Special Task Data:', specialTask)
   }, [specialTask])
+
+  const handleSubmit = () => {
+    console.log(taskType);
+    if (taskType === TaskType.SPECIAL) {
+      createSpecialTask.mutate(specialTask)
+    }
+    // Handle form submission
+  }
 
   return (
     <div className="size-full flex flex-col">
@@ -25,6 +40,7 @@ export const ReviewTask: FC<Props> = ({ setStep, specialTask }) => {
       <Button
         type="submit"
         className="w-full bg-violet-600 hover:bg-violet-700 mt-auto"
+        onClick={handleSubmit}
       >
         Enviar
       </Button>
@@ -32,7 +48,9 @@ export const ReviewTask: FC<Props> = ({ setStep, specialTask }) => {
   )
 }
 
-interface StepsProps extends Omit<Props, 'specialTask'> {}
+interface StepsProps {
+  setStep: (step: number) => void
+}
 
 const SpecialSteps: FC<StepsProps> = ({ setStep }) => {
   const specialSteps = [

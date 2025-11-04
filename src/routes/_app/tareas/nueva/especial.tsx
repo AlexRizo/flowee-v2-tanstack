@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_app/tareas/nueva/especial')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { step, ...rest } = useTaskStore()
+  const { step, type, ...rest } = useTaskStore()
 
   useEffect(() => {
     if (step < 2) {
@@ -20,7 +20,7 @@ function RouteComponent() {
   return (
     <>
       {step >= 2 ? (
-        <SpecialForm step={step} {...rest} />
+        <SpecialForm step={step} taskType={type} {...rest} />
       ) : (
         <div className="text-center">Selecciona el tipo de tarea especial</div>
       )}
