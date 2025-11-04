@@ -23,6 +23,24 @@ interface TaskStore {
   reset: () => void
 }
 
+const taskBase: Omit<CreateTaskBaseDTO, 'type'> = {
+  title: '',
+  description: '',
+  priority: Priority.LOW,
+  status: TaskStatus.PENDING,
+  dueDate: '',
+  boardId: '',
+  assignedToId: '',
+  authorId: '',
+}
+
+const specialTask: CreateSpecialTaskDTO = {
+  ...taskBase,
+  size: '',
+  legals: '',
+  type: TaskType.SPECIAL,
+}
+
 export const useTaskStore = create<TaskStore>((set) => ({
   step: 1,
   type: null,
@@ -50,21 +68,3 @@ export const useTaskStore = create<TaskStore>((set) => ({
       specialTask,
     }),
 }))
-
-const taskBase: Omit<CreateTaskBaseDTO, 'type'> = {
-  title: '',
-  description: '',
-  priority: Priority.LOW,
-  status: TaskStatus.PENDING,
-  dueDate: '',
-  boardId: '',
-  assignedToId: '',
-  authorId: '',
-}
-
-const specialTask: CreateSpecialTaskDTO = {
-  ...taskBase,
-  size: '',
-  legals: '',
-  type: TaskType.SPECIAL,
-}

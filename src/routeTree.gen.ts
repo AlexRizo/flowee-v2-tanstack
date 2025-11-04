@@ -18,8 +18,14 @@ import { Route as AppMisTareasRouteImport } from './routes/_app/mis-tareas'
 import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
 import { Route as AppCentroDeAsignacionesRouteImport } from './routes/_app/centro-de-asignaciones'
 import { Route as AppAjustesRouteImport } from './routes/_app/ajustes'
+import { Route as AppTareasRouteRouteImport } from './routes/_app/tareas/route'
 import { Route as AppTablerosIndexRouteImport } from './routes/_app/tableros/index'
 import { Route as AppTablerosTableroRouteImport } from './routes/_app/tableros/$tablero'
+import { Route as AppTareasNuevaIndexRouteImport } from './routes/_app/tareas/nueva/index'
+import { Route as AppTareasNuevaImpresaRouteImport } from './routes/_app/tareas/nueva/impresa'
+import { Route as AppTareasNuevaEspecialRouteImport } from './routes/_app/tareas/nueva/especial'
+import { Route as AppTareasNuevaEcommerceRouteImport } from './routes/_app/tareas/nueva/ecommerce'
+import { Route as AppTareasNuevaDigitalRouteImport } from './routes/_app/tareas/nueva/digital'
 
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
@@ -65,6 +71,11 @@ const AppAjustesRoute = AppAjustesRouteImport.update({
   path: '/ajustes',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppTareasRouteRoute = AppTareasRouteRouteImport.update({
+  id: '/tareas',
+  path: '/tareas',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppTablerosIndexRoute = AppTablerosIndexRouteImport.update({
   id: '/tableros/',
   path: '/tableros/',
@@ -75,8 +86,34 @@ const AppTablerosTableroRoute = AppTablerosTableroRouteImport.update({
   path: '/tableros/$tablero',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppTareasNuevaIndexRoute = AppTareasNuevaIndexRouteImport.update({
+  id: '/nueva/',
+  path: '/nueva/',
+  getParentRoute: () => AppTareasRouteRoute,
+} as any)
+const AppTareasNuevaImpresaRoute = AppTareasNuevaImpresaRouteImport.update({
+  id: '/nueva/impresa',
+  path: '/nueva/impresa',
+  getParentRoute: () => AppTareasRouteRoute,
+} as any)
+const AppTareasNuevaEspecialRoute = AppTareasNuevaEspecialRouteImport.update({
+  id: '/nueva/especial',
+  path: '/nueva/especial',
+  getParentRoute: () => AppTareasRouteRoute,
+} as any)
+const AppTareasNuevaEcommerceRoute = AppTareasNuevaEcommerceRouteImport.update({
+  id: '/nueva/ecommerce',
+  path: '/nueva/ecommerce',
+  getParentRoute: () => AppTareasRouteRoute,
+} as any)
+const AppTareasNuevaDigitalRoute = AppTareasNuevaDigitalRouteImport.update({
+  id: '/nueva/digital',
+  path: '/nueva/digital',
+  getParentRoute: () => AppTareasRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/tareas': typeof AppTareasRouteRouteWithChildren
   '/ajustes': typeof AppAjustesRoute
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/cuenta': typeof AppCuentaRoute
@@ -87,8 +124,14 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
   '/tableros': typeof AppTablerosIndexRoute
+  '/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
+  '/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
+  '/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
+  '/tareas/nueva/impresa': typeof AppTareasNuevaImpresaRoute
+  '/tareas/nueva': typeof AppTareasNuevaIndexRoute
 }
 export interface FileRoutesByTo {
+  '/tareas': typeof AppTareasRouteRouteWithChildren
   '/ajustes': typeof AppAjustesRoute
   '/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/cuenta': typeof AppCuentaRoute
@@ -99,10 +142,16 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
   '/tableros': typeof AppTablerosIndexRoute
+  '/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
+  '/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
+  '/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
+  '/tareas/nueva/impresa': typeof AppTareasNuevaImpresaRoute
+  '/tareas/nueva': typeof AppTareasNuevaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
+  '/_app/tareas': typeof AppTareasRouteRouteWithChildren
   '/_app/ajustes': typeof AppAjustesRoute
   '/_app/centro-de-asignaciones': typeof AppCentroDeAsignacionesRoute
   '/_app/cuenta': typeof AppCuentaRoute
@@ -113,10 +162,16 @@ export interface FileRoutesById {
   '/auth/': typeof AuthIndexRoute
   '/_app/tableros/$tablero': typeof AppTablerosTableroRoute
   '/_app/tableros/': typeof AppTablerosIndexRoute
+  '/_app/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
+  '/_app/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
+  '/_app/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
+  '/_app/tareas/nueva/impresa': typeof AppTareasNuevaImpresaRoute
+  '/_app/tareas/nueva/': typeof AppTareasNuevaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/tareas'
     | '/ajustes'
     | '/centro-de-asignaciones'
     | '/cuenta'
@@ -127,8 +182,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/tableros/$tablero'
     | '/tableros'
+    | '/tareas/nueva/digital'
+    | '/tareas/nueva/ecommerce'
+    | '/tareas/nueva/especial'
+    | '/tareas/nueva/impresa'
+    | '/tareas/nueva'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/tareas'
     | '/ajustes'
     | '/centro-de-asignaciones'
     | '/cuenta'
@@ -139,9 +200,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/tableros/$tablero'
     | '/tableros'
+    | '/tareas/nueva/digital'
+    | '/tareas/nueva/ecommerce'
+    | '/tareas/nueva/especial'
+    | '/tareas/nueva/impresa'
+    | '/tareas/nueva'
   id:
     | '__root__'
     | '/_app'
+    | '/_app/tareas'
     | '/_app/ajustes'
     | '/_app/centro-de-asignaciones'
     | '/_app/cuenta'
@@ -152,6 +219,11 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/_app/tableros/$tablero'
     | '/_app/tableros/'
+    | '/_app/tareas/nueva/digital'
+    | '/_app/tareas/nueva/ecommerce'
+    | '/_app/tareas/nueva/especial'
+    | '/_app/tareas/nueva/impresa'
+    | '/_app/tareas/nueva/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -224,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAjustesRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/tareas': {
+      id: '/_app/tareas'
+      path: '/tareas'
+      fullPath: '/tareas'
+      preLoaderRoute: typeof AppTareasRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/tableros/': {
       id: '/_app/tableros/'
       path: '/tableros'
@@ -238,10 +317,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTablerosTableroRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/tareas/nueva/': {
+      id: '/_app/tareas/nueva/'
+      path: '/nueva'
+      fullPath: '/tareas/nueva'
+      preLoaderRoute: typeof AppTareasNuevaIndexRouteImport
+      parentRoute: typeof AppTareasRouteRoute
+    }
+    '/_app/tareas/nueva/impresa': {
+      id: '/_app/tareas/nueva/impresa'
+      path: '/nueva/impresa'
+      fullPath: '/tareas/nueva/impresa'
+      preLoaderRoute: typeof AppTareasNuevaImpresaRouteImport
+      parentRoute: typeof AppTareasRouteRoute
+    }
+    '/_app/tareas/nueva/especial': {
+      id: '/_app/tareas/nueva/especial'
+      path: '/nueva/especial'
+      fullPath: '/tareas/nueva/especial'
+      preLoaderRoute: typeof AppTareasNuevaEspecialRouteImport
+      parentRoute: typeof AppTareasRouteRoute
+    }
+    '/_app/tareas/nueva/ecommerce': {
+      id: '/_app/tareas/nueva/ecommerce'
+      path: '/nueva/ecommerce'
+      fullPath: '/tareas/nueva/ecommerce'
+      preLoaderRoute: typeof AppTareasNuevaEcommerceRouteImport
+      parentRoute: typeof AppTareasRouteRoute
+    }
+    '/_app/tareas/nueva/digital': {
+      id: '/_app/tareas/nueva/digital'
+      path: '/nueva/digital'
+      fullPath: '/tareas/nueva/digital'
+      preLoaderRoute: typeof AppTareasNuevaDigitalRouteImport
+      parentRoute: typeof AppTareasRouteRoute
+    }
   }
 }
 
+interface AppTareasRouteRouteChildren {
+  AppTareasNuevaDigitalRoute: typeof AppTareasNuevaDigitalRoute
+  AppTareasNuevaEcommerceRoute: typeof AppTareasNuevaEcommerceRoute
+  AppTareasNuevaEspecialRoute: typeof AppTareasNuevaEspecialRoute
+  AppTareasNuevaImpresaRoute: typeof AppTareasNuevaImpresaRoute
+  AppTareasNuevaIndexRoute: typeof AppTareasNuevaIndexRoute
+}
+
+const AppTareasRouteRouteChildren: AppTareasRouteRouteChildren = {
+  AppTareasNuevaDigitalRoute: AppTareasNuevaDigitalRoute,
+  AppTareasNuevaEcommerceRoute: AppTareasNuevaEcommerceRoute,
+  AppTareasNuevaEspecialRoute: AppTareasNuevaEspecialRoute,
+  AppTareasNuevaImpresaRoute: AppTareasNuevaImpresaRoute,
+  AppTareasNuevaIndexRoute: AppTareasNuevaIndexRoute,
+}
+
+const AppTareasRouteRouteWithChildren = AppTareasRouteRoute._addFileChildren(
+  AppTareasRouteRouteChildren,
+)
+
 interface AppRouteRouteChildren {
+  AppTareasRouteRoute: typeof AppTareasRouteRouteWithChildren
   AppAjustesRoute: typeof AppAjustesRoute
   AppCentroDeAsignacionesRoute: typeof AppCentroDeAsignacionesRoute
   AppCuentaRoute: typeof AppCuentaRoute
@@ -254,6 +389,7 @@ interface AppRouteRouteChildren {
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppTareasRouteRoute: AppTareasRouteRouteWithChildren,
   AppAjustesRoute: AppAjustesRoute,
   AppCentroDeAsignacionesRoute: AppCentroDeAsignacionesRoute,
   AppCuentaRoute: AppCuentaRoute,

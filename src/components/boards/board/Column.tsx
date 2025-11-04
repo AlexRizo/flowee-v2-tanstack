@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { TaskStatus } from '@/lib/api/interfaces/tasks.interface'
 import { cn } from '@/lib/utils'
+import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { type FC } from 'react'
 
@@ -26,13 +27,15 @@ export const Column: FC<Props> = ({
         <h2 className="font-medium text-sm text-stone-800">{name}</h2>
         <small className="text-muted-foreground">({items.length})</small>
         {id === TaskStatus.PENDING && (
-          <Button
-            size="sm"
-            className="bg-indigo-600 hover:bg-indigo-700 text-xs h-auto py-1 !px-1.5 ml-auto"
-          >
-            <Plus size={10} />
-            Nueva
-          </Button>
+          <Link to="/tareas/nueva">
+            <Button
+              size="sm"
+              className="bg-indigo-600 hover:bg-indigo-700 text-xs h-auto py-1 !px-1.5 ml-auto"
+            >
+              <Plus size={10} />
+              Nueva
+            </Button>
+          </Link>
         )}
       </div>
       <div role="contentinfo"></div>
