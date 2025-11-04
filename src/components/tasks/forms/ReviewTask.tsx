@@ -4,6 +4,7 @@ import {
   TaskType,
   type CreateSpecialTaskDTO,
 } from '@/lib/api/interfaces/tasks.interface'
+import { uploadTaskFiles } from '@/lib/api/tasks'
 import { SquarePen } from 'lucide-react'
 import { useEffect, type FC } from 'react'
 
@@ -21,11 +22,10 @@ export const ReviewTask: FC<Props> = ({ setStep, specialTask, taskType }) => {
   }, [specialTask])
 
   const handleSubmit = () => {
-    console.log(taskType);
+    console.log(specialTask)
     if (taskType === TaskType.SPECIAL) {
       createSpecialTask.mutate(specialTask)
     }
-    // Handle form submission
   }
 
   return (
@@ -34,7 +34,7 @@ export const ReviewTask: FC<Props> = ({ setStep, specialTask, taskType }) => {
       <p className="my-10 font-semibold text-sm text-center">
         Revisa los detalles y confirma tu solicitud.
       </p>
-      <div className="flex-grow flex flex-col w-32 mx-auto gap-6">
+      <div className="flex-grow flex flex-col w-32 mx-auto gap-3">
         <SpecialSteps setStep={setStep} />
       </div>
       <Button

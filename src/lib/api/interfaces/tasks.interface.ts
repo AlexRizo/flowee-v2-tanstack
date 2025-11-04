@@ -63,7 +63,15 @@ export interface CreateTaskBaseDTO {
 
 export interface CreateSpecialTaskDTO extends CreateTaskBaseDTO {
   size: string
-  legals: string
+  legals?: string
 }
 
 export interface UpdateSpecialTaskDTO extends Partial<CreateSpecialTaskDTO> {}
+
+export interface UploadTaskFilesDTO {
+  taskId: string
+  files: {
+    referenceFiles?: File[]
+    requiredFiles?: File[]
+  }
+}

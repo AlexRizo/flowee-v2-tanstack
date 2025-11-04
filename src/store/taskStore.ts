@@ -30,14 +30,14 @@ const taskBase: Omit<CreateTaskBaseDTO, 'type'> = {
   status: TaskStatus.PENDING,
   dueDate: '',
   boardId: '',
-  assignedToId: '',
-  authorId: '',
+  assignedToId: undefined,
+  authorId: undefined,
 }
 
 const specialTask: CreateSpecialTaskDTO = {
   ...taskBase,
   size: '',
-  legals: '',
+  legals: undefined,
   type: TaskType.SPECIAL,
 }
 
