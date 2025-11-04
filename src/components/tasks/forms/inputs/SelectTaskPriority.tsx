@@ -23,7 +23,7 @@ export const SelectTaskPriority = ({ value, onChange }: Props) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Roles</SelectLabel>
+          <SelectLabel>Prioridades</SelectLabel>
           {Array.from(Object.values(Priority)).map((role) => (
             <SelectItem key={role} value={role}>
               {getTaskPriority(role)}

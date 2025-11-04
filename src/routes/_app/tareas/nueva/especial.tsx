@@ -1,4 +1,4 @@
-import { Special } from '@/components/tasks/forms/Special'
+import { SpecialForm } from '@/components/tasks/forms/SpecialForm'
 import { useTaskStore } from '@/store/taskStore'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_app/tareas/nueva/especial')({
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { step } = useTaskStore()
+  const { step, ...rest } = useTaskStore()
 
   useEffect(() => {
     if (step < 2) {
@@ -19,8 +19,8 @@ function RouteComponent() {
 
   return (
     <>
-      {step === 2 ? (
-        <Special />
+      {step >= 2 ? (
+        <SpecialForm step={step} {...rest} />
       ) : (
         <div className="text-center">Selecciona el tipo de tarea especial</div>
       )}

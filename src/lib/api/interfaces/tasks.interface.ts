@@ -53,10 +53,12 @@ export interface CreateTaskBaseDTO {
   type: TaskType
   priority: Priority
   status?: TaskStatus
-  dueDate: string
+  dueDate: string | Date
   boardId: string
   assignedToId: string
   authorId?: string
+  referenceFiles?: File[]
+  requiredFiles?: File[]
 }
 
 export interface CreateSpecialTaskDTO extends CreateTaskBaseDTO {
