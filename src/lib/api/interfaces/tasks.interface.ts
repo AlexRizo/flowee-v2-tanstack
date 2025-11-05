@@ -75,3 +75,8 @@ export interface UploadTaskFilesDTO {
     requiredFiles?: File[]
   }
 }
+
+export interface CreateTaskResponse {
+  task: Task
+  message?: string | string[]
+}

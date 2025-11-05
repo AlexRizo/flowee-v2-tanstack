@@ -14,17 +14,17 @@ export const uploadTaskFiles = async ({ taskId, files }: UploadTaskFilesDTO) => 
 
   if (files.referenceFiles) {
     files.referenceFiles.forEach((file) => {
-      formData.append('files', file)
+      formData.append('referenceFiles', file)
     })
   }
 
   if (files.requiredFiles) {
     files.requiredFiles.forEach((file) => {
-      formData.append('files', file)
+      formData.append('requiredFiles', file)
     })
   }
 
-  return await apiPost<void>(`/tasks/${taskId}/files`, formData, {
+  return await apiPost<{ message: string }>(`/tasks/${taskId}/uploads`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
 }

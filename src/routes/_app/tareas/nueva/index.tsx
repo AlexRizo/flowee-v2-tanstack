@@ -4,6 +4,7 @@ import { TaskType } from '@/lib/api/interfaces/tasks.interface'
 import { useTaskStore } from '@/store/taskStore'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { IconName } from 'lucide-react/dynamic'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_app/tareas/nueva/')({
@@ -39,7 +40,11 @@ const taskTypes = [
 function RouteComponent() {
   const navigate = useNavigate()
 
-  const { type, setType, setStep } = useTaskStore()
+  const { type, setType, setStep, reset } = useTaskStore()
+
+  useEffect(() => {
+    reset()
+  }, [reset])
 
   const getTaskType = (id: TaskType | null) => {
     if (!id) return
