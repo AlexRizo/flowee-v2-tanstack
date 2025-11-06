@@ -28,6 +28,7 @@ import type {
 import { Textarea } from '@/components/ui/textarea'
 import { ReviewTask } from './ReviewTask'
 import { Done } from './Done'
+import { UploadFilesInput } from '@/components/global/inputs/files/UploadFilesInput'
 
 interface Props {
   step: number
@@ -246,13 +247,16 @@ const DescriptionAndReferences: FC<FormProps> = ({
               <FormItem>
                 <FormLabel>Archivos de referencia</FormLabel>
                 <FormControl>
-                  <Input
-                    type="file"
-                    multiple
-                    onChange={(e) =>
-                      field.onChange(Array.from(e.target.files || []))
-                    }
-                  />
+                  <>
+                    <Input
+                      type="file"
+                      multiple
+                      onChange={(e) =>
+                        field.onChange(Array.from(e.target.files || []))
+                      }
+                    />
+                    <UploadFilesInput />
+                  </>
                 </FormControl>
                 <FormMessage />
               </FormItem>
