@@ -247,16 +247,13 @@ const DescriptionAndReferences: FC<FormProps> = ({
               <FormItem>
                 <FormLabel>Archivos de referencia</FormLabel>
                 <FormControl>
-                  <>
-                    <Input
-                      type="file"
-                      multiple
-                      onChange={(e) =>
-                        field.onChange(Array.from(e.target.files || []))
-                      }
-                    />
-                    <UploadFilesInput />
-                  </>
+                  <UploadFilesInput
+                    onChange={(files) => {
+                      field.onChange(Array.from(files))
+                      console.log(form.getValues('referenceFiles'))
+                    }}
+                    name="referenceFiles"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -18,12 +18,12 @@ function RouteComponent() {
   }, [step, navigate])
 
   return (
-    <>
+    <div className='max-h-full overflow-y-auto scrollbar-none'>
       {step >= 2 ? (
         <SpecialForm step={step} taskType={type} {...rest} />
       ) : (
         <div className="text-center">Selecciona el tipo de tarea especial</div>
       )}
-    </>
+    </div>
   )
 }
