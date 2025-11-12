@@ -34,7 +34,7 @@ export const ReviewTask: FC<Props> = ({
 
   useEffect(() => {
     if (createSpecialTask.isSuccess && !createSpecialTask.data.message) {
-      setStep(5)
+      setStep(step + 1)
     } else {
       setOpenFilesDialog(!!createSpecialTask.data?.message)
     }

@@ -11,7 +11,7 @@ interface Props {
   maxFileSize?: number
   filesCountLimit?: number
   acceptedMimeTypes?: string[]
-  initialFiles?: FileList | []
+  initialFiles?: FileList | File[] | []
   onChange: (files: FileList | File[]) => void
   name?: string
 }

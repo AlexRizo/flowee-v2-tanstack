@@ -248,6 +248,7 @@ const DescriptionAndReferences: FC<FormProps> = ({
                 <FormLabel>Archivos de referencia</FormLabel>
                 <FormControl>
                   <UploadFilesInput
+                    initialFiles={specialTask.referenceFiles}
                     onChange={(files) => {
                       field.onChange(Array.from(files))
                       console.log(form.getValues('referenceFiles'))
@@ -355,12 +356,12 @@ const TechnicalDetails: FC<FormProps> = ({
                   Adjunta imágenes, logos o archivos que ayuden al diseño
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="file"
-                    multiple
-                    onChange={(e) =>
-                      field.onChange(Array.from(e.target.files || []))
-                    }
+                  <UploadFilesInput
+                    initialFiles={specialTask.requiredFiles}
+                    onChange={(files) => {
+                      field.onChange(Array.from(files))
+                    }}
+                    name="requiredFiles"
                   />
                 </FormControl>
                 <FormDescription>
