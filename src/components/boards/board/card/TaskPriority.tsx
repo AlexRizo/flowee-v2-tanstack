@@ -11,16 +11,16 @@ interface Props {
 export const TaskPriority: FC<Props> = ({ priority }) => {
   const flagColor =
     priority === Priority.LOW
-      ? 'text-blue-400'
+      ? 'text-blue-500 fill-blue-500'
       : priority === Priority.NORMAL
-        ? 'text-violet-400'
+        ? 'text-violet-500 fill-violet-500'
         : priority === Priority.HIGH
-          ? 'text-orange-400'
-          : 'text-red-400'
+          ? 'text-orange-400 fill-orange-400'
+          : 'text-red-400 fill-red-400'
 
   return (
-    <span className='ml-auto text-sm'>
-      <Flag className={cn(flagColor)} />
+    <span className="flex items-center gap-0.5 ml-auto text-xs font-medium">
+      <Flag className={cn(flagColor)} size={13} />
       {getTaskPriority(priority)}
     </span>
   )

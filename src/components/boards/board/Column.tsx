@@ -1,16 +1,17 @@
 import { Button } from '@/components/ui/button'
-import { TaskStatus } from '@/lib/api/interfaces/tasks.interface'
+import { TaskStatus, type Task } from '@/lib/api/interfaces/tasks.interface'
 import { cn } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { type FC } from 'react'
+import { Card } from './Card'
 
 interface Props {
   id: TaskStatus
   color?: string
   columnBackground?: string
   name: string
-  items: any[]
+  items: Task[]
 }
 
 export const Column: FC<Props> = ({
@@ -27,10 +28,10 @@ export const Column: FC<Props> = ({
         <h2 className="font-medium text-sm text-stone-800">{name}</h2>
         <small className="text-muted-foreground">({items.length})</small>
         {id === TaskStatus.PENDING && (
-          <Link to="/tareas/nueva">
+          <Link to="/tareas/nueva" className="ml-auto">
             <Button
               size="sm"
-              className="bg-indigo-600 hover:bg-indigo-700 text-xs h-auto py-1 !px-1.5 ml-auto"
+              className="bg-indigo-600 hover:bg-indigo-700 text-xs h-auto py-1 !px-1.5"
             >
               <Plus size={10} />
               Nueva
@@ -38,7 +39,11 @@ export const Column: FC<Props> = ({
           </Link>
         )}
       </div>
-      <div role="contentinfo"></div>
+      <div role="contentinfo" className='mt-2 space-y-1.5'>
+        {items.map((item) => (
+          <Card key={item.id} {...item} />
+        ))}
+      </div>
     </div>
   )
 }

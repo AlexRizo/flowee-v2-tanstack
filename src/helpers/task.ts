@@ -25,7 +25,7 @@ export const getTaskType = (type: TaskType): EspTaskType => {
 
 enum EspPriority {
   LOW = 'Baja',
-  NORMAL = 'Media',
+  NORMAL = 'Normal',
   HIGH = 'Alta',
   URGENT = 'Urgente',
   UNKNOWN = 'Desconocida',

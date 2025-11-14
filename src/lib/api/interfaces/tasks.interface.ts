@@ -80,3 +80,10 @@ export interface CreateTaskResponse {
   task: Task
   message?: string | string[]
 }
+
+export type OrderTasks = Record<TaskStatus, Task[]>
+
+export interface TasksResult {
+  unorder: Task[]
+  order: OrderTasks
+}

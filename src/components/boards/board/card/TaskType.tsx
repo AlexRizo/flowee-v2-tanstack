@@ -27,7 +27,7 @@ export const TaskType: FC<Props> = ({ type }) => {
   return (
     <Tooltip>
       <TooltipTrigger className="size-5 flex justify-center items-center rounded">
-        <DynamicIcon name={iconName} />
+        <DynamicIcon name={iconName} strokeWidth={1.5} />
       </TooltipTrigger>
       <TooltipContent>{getTaskType(type)}</TooltipContent>
     </Tooltip>

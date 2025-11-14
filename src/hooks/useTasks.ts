@@ -1,8 +1,11 @@
 import type { ApiError } from '@/lib/api/api'
-import type {
-  CreateSpecialTaskDTO,
-  CreateTaskResponse,
-  Task,
+import {
+  type CreateSpecialTaskDTO,
+  type CreateTaskResponse,
+  type Task,
+  type OrderTasks,
+  TaskStatus,
+  type TasksResult,
 } from '@/lib/api/interfaces/tasks.interface'
 import {
   createSpecialTask as createSpecialTaskApi,
@@ -15,12 +18,38 @@ interface Props {
   boardId?: string | null
 }
 
+const INITIAL_ORDER: OrderTasks = {
+  [TaskStatus.PENDING]: [],
+  [TaskStatus.ATTENTION]: [],
+  [TaskStatus.IN_PROGRESS]: [],
+  [TaskStatus.FOR_REVIEW]: [],
+  [TaskStatus.DONE]: [],
+}
+
 export const useTasks = ({ boardId }: Props) => {
-  const tasks = useQuery<Task[], ApiError>({
+  const tasksQuery = useQuery<Task[], ApiError, TasksResult>({
     queryKey: ['tasks', boardId],
-    queryFn: async () => getTaskByBoard(boardId!),
+    queryFn: async () => await getTaskByBoard(boardId!),
     enabled: !!boardId,
     retry: false,
+    select: (tasks) => {
+      const order: OrderTasks = {
+        [TaskStatus.PENDING]: [],
+        [TaskStatus.ATTENTION]: [],
+        [TaskStatus.IN_PROGRESS]: [],
+        [TaskStatus.FOR_REVIEW]: [],
+        [TaskStatus.DONE]: [],
+      }
+
+      for (const task of tasks) {
+        order[task.status].push(task)
+      }
+
+      return {
+        unorder: tasks,
+        order,
+      }
+    },
   })
 
   const createSpecialTask = useMutation<
@@ -53,7 +82,11 @@ export const useTasks = ({ boardId }: Props) => {
   })
 
   return {
-    tasks,
+    tasks: {
+      unorder: tasksQuery.data?.unorder || [],
+      order: tasksQuery.data?.order || INITIAL_ORDER,
+    },
+    tasksQuery,
     createSpecialTask,
   }
 }

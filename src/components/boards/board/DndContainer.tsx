@@ -8,7 +8,7 @@ import {
 import { Column } from './Column'
 import { useTasks } from '@/hooks/useTasks'
 import { useBoardStore } from '@/store/boardStore'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { TaskStatus } from '@/lib/api/interfaces/tasks.interface'
 
@@ -17,7 +17,6 @@ interface Column {
   name: string
   color: string
   columnBackground?: string
-  items: any[]
 }
 
 const columns: Column[] = [
@@ -26,35 +25,30 @@ const columns: Column[] = [
     name: 'Column 1',
     color: 'bg-gray-500',
     columnBackground: 'bg-gray-100',
-    items: [],
   },
   {
     id: TaskStatus.ATTENTION,
     name: 'Column 2',
     color: 'bg-yellow-500',
     columnBackground: 'bg-yellow-50',
-    items: [],
   },
   {
     id: TaskStatus.IN_PROGRESS,
     name: 'Column 3',
     color: 'bg-blue-500',
     columnBackground: 'bg-blue-50',
-    items: [],
   },
   {
     id: TaskStatus.FOR_REVIEW,
     name: 'Column 4',
     color: 'bg-violet-500',
     columnBackground: 'bg-violet-50',
-    items: [],
   },
   {
     id: TaskStatus.DONE,
     name: 'Column 5',
     color: 'bg-green-500',
     columnBackground: 'bg-green-50',
-    items: [],
   },
 ]
 
@@ -67,13 +61,13 @@ export const DndContainer = () => {
 
   const { selectedBoardId } = useBoardStore()
 
-  const { tasks } = useTasks({ boardId: selectedBoardId })
+  const { tasks, tasksQuery } = useTasks({ boardId: selectedBoardId })
 
   useEffect(() => {
-    if (tasks.isSuccess && !tasks.data?.length) {
+    if (tasksQuery.isSuccess && tasks.unorder.length === 0) {
       toast.info('No se encontraron tareas para este tablero.')
     }
-  }, [tasks.data])
+  }, [tasksQuery.data])
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter}>
@@ -85,7 +79,7 @@ export const DndContainer = () => {
             color={column.color}
             columnBackground={column.columnBackground}
             name={column.name}
-            items={column.items}
+            items={tasks.order[column.id]}
           />
         ))}
       </section>

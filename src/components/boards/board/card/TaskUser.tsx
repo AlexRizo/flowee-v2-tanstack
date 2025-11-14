@@ -6,18 +6,18 @@ import {
 import type { FC } from 'react'
 
 interface Props {
-  name: string
+  name?: string
   imageUrl?: string
 }
 
 export const TaskUser: FC<Props> = ({ name, imageUrl }) => {
   return (
     <Tooltip>
-      <TooltipTrigger>
-        <img src={imageUrl ?? '/dashboard/default-user-avatar.webp'} alt="UA" />
+      <TooltipTrigger className='flex'>
+        <img src={imageUrl ?? '/dashboard/user/default-avatar.webp'} alt="UA" className='size-5 rounded' />
       </TooltipTrigger>
       <TooltipContent>
-        <p>{name}</p>
+        <p>{name ?? 'Sin asignar'}</p>
       </TooltipContent>
     </Tooltip>
   )
