@@ -1,3 +1,4 @@
+import { groupTasksByStatus } from '@/helpers/task'
 import type { ApiError } from '@/lib/api/api'
 import {
   type CreateSpecialTaskDTO,
@@ -13,6 +14,7 @@ import {
   uploadTaskFiles as uploadTaskFilesApi,
 } from '@/lib/api/tasks'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
 interface Props {
   boardId?: string | null
@@ -27,30 +29,35 @@ const INITIAL_ORDER: OrderTasks = {
 }
 
 export const useTasks = ({ boardId }: Props) => {
+  const [localOrder, setLocalOrder] = useState<OrderTasks>(INITIAL_ORDER)
+
   const tasksQuery = useQuery<Task[], ApiError, TasksResult>({
     queryKey: ['tasks', boardId],
     queryFn: async () => await getTaskByBoard(boardId!),
     enabled: !!boardId,
     retry: false,
-    select: (tasks) => {
-      const order: OrderTasks = {
-        [TaskStatus.PENDING]: [],
-        [TaskStatus.ATTENTION]: [],
-        [TaskStatus.IN_PROGRESS]: [],
-        [TaskStatus.FOR_REVIEW]: [],
-        [TaskStatus.DONE]: [],
-      }
-
-      for (const task of tasks) {
-        order[task.status].push(task)
-      }
-
-      return {
-        unorder: tasks,
-        order,
-      }
-    },
+    select: (tasks) => groupTasksByStatus(tasks),
   })
+
+  useEffect(() => {
+    if (tasksQuery.data) {
+      setLocalOrder(tasksQuery.data.order)
+    }
+  }, [tasksQuery.data])
+
+  const moveTask = (from: TaskStatus, to: TaskStatus, taskId: string) => {
+    setLocalOrder((prev) => {
+      const updated = structuredClone(prev)
+
+      const index = updated[from].findIndex((task) => task.id === taskId)
+      const [task] = updated[from].splice(index, 1)
+
+      task.status = to
+      updated[to].push(task)
+
+      return updated
+    })
+  }
 
   const createSpecialTask = useMutation<
     CreateTaskResponse,
@@ -84,8 +91,9 @@ export const useTasks = ({ boardId }: Props) => {
   return {
     tasks: {
       unorder: tasksQuery.data?.unorder || [],
-      order: tasksQuery.data?.order || INITIAL_ORDER,
+      order: localOrder,
     },
+    moveTask,
     tasksQuery,
     createSpecialTask,
   }

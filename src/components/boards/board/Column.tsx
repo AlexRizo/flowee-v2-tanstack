@@ -5,6 +5,7 @@ import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { type FC } from 'react'
 import { Card } from './Card'
+import { useDroppable } from '@dnd-kit/core'
 
 interface Props {
   id: TaskStatus
@@ -21,8 +22,10 @@ export const Column: FC<Props> = ({
   name,
   items = [],
 }) => {
+  const { setNodeRef, isOver } = useDroppable({ id })
+
   return (
-    <div className={cn('rounded-md h-full min-w-62.5 p-2', columnBackground)}>
+    <div className={cn('rounded-md h-max min-w-62.5 p-2', columnBackground)}>
       <div className="flex items-center gap-0.5 h-6">
         <span className={cn('h-4 w-[5px] rounded mr-1', color)}></span>
         <h2 className="font-medium text-sm text-stone-800">{name}</h2>
@@ -39,10 +42,17 @@ export const Column: FC<Props> = ({
           </Link>
         )}
       </div>
-      <div role="contentinfo" className='mt-2 space-y-1.5'>
+      <div
+        role="contentinfo"
+        className="mt-2 space-y-1.5 h-full flex flex-col items-center"
+        ref={setNodeRef}
+      >
         {items.map((item) => (
           <Card key={item.id} {...item} />
         ))}
+        {isOver && (
+          <div className="w-[230px] h-[146px] border border-dashed border-purple-500 bg-white rounded"></div>
+        )}
       </div>
     </div>
   )

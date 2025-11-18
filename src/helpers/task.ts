@@ -1,4 +1,10 @@
-import { Priority, TaskType } from '@/lib/api/interfaces/tasks.interface'
+import {
+  Priority,
+  TaskStatus,
+  TaskType,
+  type OrderTasks,
+  type Task,
+} from '@/lib/api/interfaces/tasks.interface'
 
 enum EspTaskType {
   PRINT = 'Impresa',
@@ -43,5 +49,24 @@ export const getTaskPriority = (priority: Priority): EspPriority => {
       return EspPriority.URGENT
     default:
       return EspPriority.UNKNOWN
+  }
+}
+
+export const groupTasksByStatus = (tasks: Task[]) => {
+  const order: OrderTasks = {
+    [TaskStatus.PENDING]: [],
+    [TaskStatus.ATTENTION]: [],
+    [TaskStatus.IN_PROGRESS]: [],
+    [TaskStatus.FOR_REVIEW]: [],
+    [TaskStatus.DONE]: [],
+  }
+
+  for (const task of tasks) {
+    order[task.status].push(task)
+  }
+
+  return {
+    unorder: tasks,
+    order,
   }
 }
