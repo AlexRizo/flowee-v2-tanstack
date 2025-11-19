@@ -1,7 +1,8 @@
 {
-  "name": "flowee-tanstack",
+  "name": "flowee-tanstack_v2",
   "private": true,
   "type": "module",
+  "version": "2.0.24",
   "scripts": {
     "dev": "vite --port 5173",
     "build": "vite build && tsc",

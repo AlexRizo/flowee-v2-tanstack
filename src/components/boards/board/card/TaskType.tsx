@@ -16,11 +16,11 @@ export const TaskType: FC<Props> = ({ type }) => {
   const iconName: Partial<IconName> =
     type === TaskT.PRINT
       ? 'printer'
-      : TaskT.DIGITAL
+      : type === TaskT.DIGITAL
         ? 'monitor-smartphone'
-        : TaskT.ECOMMERCE
+        : type === TaskT.ECOMMERCE
           ? 'store'
-          : TaskT.SPECIAL
+          : type === TaskT.SPECIAL
             ? 'sparkles'
             : 'circle-question-mark'
 

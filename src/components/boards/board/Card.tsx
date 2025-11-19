@@ -41,7 +41,7 @@ export const Card: FC<Props> = ({
         isDragging && 'opacity-50',
       )}
       ref={setNodeRef}
-      style={style}
+      style={{ ...style, willChange: 'transform' }}
       {...listeners}
       {...attributes}
     >
