@@ -2,6 +2,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
+import { connectAppSocket } from '@/lib/ws/appSocket'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app')({
@@ -15,11 +16,13 @@ export const Route = createFileRoute('/_app')({
           queryFn: async () => await getMe(),
         }))
 
-      if (!user)
+      if (!user) {
         throw redirect({
           to: '/auth',
         })
+      }
 
+      connectAppSocket()
       return { user }
     } catch (error) {
       context.queryClient.removeQueries({ queryKey: ['auth', 'user'] })

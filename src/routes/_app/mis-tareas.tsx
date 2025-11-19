@@ -7,7 +7,7 @@ export const Route = createFileRoute('/_app/mis-tareas')({
 
 function RouteComponent() {
   return (
-    <section className='h-full mx-auto'>
+    <section className="h-full mx-auto">
       <DndContainer />
     </section>
   )

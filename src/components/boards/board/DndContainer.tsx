@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { TaskStatus, type Task } from '@/lib/api/interfaces/tasks.interface'
 import { OverlayCard } from './OverlayCard'
+import { appSocket } from '@/lib/ws/appSocket'
+import type { UpdateTaskStatusPayload } from '@/lib/ws/interfaces/ws-task.interface'
 
 interface Column {
   id: TaskStatus
@@ -99,6 +101,23 @@ export const DndContainer = () => {
 
     moveTask(fromStatus as TaskStatus, toStatus as TaskStatus, taskId)
   }
+
+  useEffect(() => {
+    if (!selectedBoardId) return
+
+    appSocket.emit('joinBoard', { boardId: selectedBoardId })
+
+    const handler = (data: UpdateTaskStatusPayload) => {
+      console.log('Task status updated:', data)
+      moveTask(data.oldStatus, data.newStatus, data.taskId)
+    }
+
+    appSocket.on('updateTaskStatus', handler)
+
+    return () => {
+      appSocket.off('updateTaskStatus', handler)
+    }
+  }, [selectedBoardId])
 
   return (
     <DndContext

@@ -1,6 +1,7 @@
 import type { ApiError } from '@/lib/api/api'
 import { login, logout } from '@/lib/api/auth'
 import type { AuthUser, LoginDto } from '@/lib/api/interfaces/auth.interface'
+import { disconnectAppSocket } from '@/lib/ws/appSocket'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
@@ -31,6 +32,7 @@ export const useAuth = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.clear()
+      disconnectAppSocket()
       navigate({ to: '/auth' })
     },
     onError: (error) => {
