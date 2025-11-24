@@ -13,7 +13,7 @@ import {
   getTaskByBoard,
   uploadTaskFiles as uploadTaskFilesApi,
 } from '@/lib/api/tasks'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -30,6 +30,7 @@ const INITIAL_ORDER: OrderTasks = {
 
 export const useTasks = ({ boardId }: Props) => {
   const [localOrder, setLocalOrder] = useState<OrderTasks>(INITIAL_ORDER)
+  const queryClient = useQueryClient()
 
   const tasksQuery = useQuery<Task[], ApiError, TasksResult>({
     queryKey: ['tasks', boardId],
@@ -50,10 +51,19 @@ export const useTasks = ({ boardId }: Props) => {
       const updated = structuredClone(prev)
 
       const index = updated[from].findIndex((task) => task.id === taskId)
+
+      if (index === -1) return prev
+
       const [task] = updated[from].splice(index, 1)
 
       task.status = to
       updated[to].push(task)
+
+      queryClient.setQueryData(['tasks', boardId], (oldData: Task[]) => {
+        if (!oldData) return oldData
+
+        return oldData.map((t) => (t.id === taskId ? { ...t, status: to } : t))
+      })
 
       return updated
     })
