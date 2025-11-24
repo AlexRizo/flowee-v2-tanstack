@@ -5,7 +5,7 @@ import { useAdminUsers } from '@/hooks/admin/useAdminUsers'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
-export const Route = createFileRoute('/_app/usuarios')({
+export const Route = createFileRoute('/_app/usuarios/')({
   component: RouteComponent,
 })
 

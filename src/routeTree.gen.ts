@@ -12,14 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
-import { Route as AppUsuariosRouteImport } from './routes/_app/usuarios'
 import { Route as AppSolicitudesRouteImport } from './routes/_app/solicitudes'
 import { Route as AppMisTareasRouteImport } from './routes/_app/mis-tareas'
 import { Route as AppCuentaRouteImport } from './routes/_app/cuenta'
 import { Route as AppCentroDeAsignacionesRouteImport } from './routes/_app/centro-de-asignaciones'
 import { Route as AppAjustesRouteImport } from './routes/_app/ajustes'
 import { Route as AppTareasRouteRouteImport } from './routes/_app/tareas/route'
+import { Route as AppUsuariosIndexRouteImport } from './routes/_app/usuarios/index'
 import { Route as AppTablerosIndexRouteImport } from './routes/_app/tableros/index'
+import { Route as AppUsuariosUserSlugRouteImport } from './routes/_app/usuarios/$userSlug'
 import { Route as AppTablerosTableroRouteImport } from './routes/_app/tableros/$tablero'
 import { Route as AppTareasNuevaIndexRouteImport } from './routes/_app/tareas/nueva/index'
 import { Route as AppTareasNuevaImpresaRouteImport } from './routes/_app/tareas/nueva/impresa'
@@ -39,11 +40,6 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppUsuariosRoute = AppUsuariosRouteImport.update({
-  id: '/usuarios',
-  path: '/usuarios',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppSolicitudesRoute = AppSolicitudesRouteImport.update({
@@ -76,9 +72,19 @@ const AppTareasRouteRoute = AppTareasRouteRouteImport.update({
   path: '/tareas',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppUsuariosIndexRoute = AppUsuariosIndexRouteImport.update({
+  id: '/usuarios/',
+  path: '/usuarios/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppTablerosIndexRoute = AppTablerosIndexRouteImport.update({
   id: '/tableros/',
   path: '/tableros/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppUsuariosUserSlugRoute = AppUsuariosUserSlugRouteImport.update({
+  id: '/usuarios/$userSlug',
+  path: '/usuarios/$userSlug',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppTablerosTableroRoute = AppTablerosTableroRouteImport.update({
@@ -119,11 +125,12 @@ export interface FileRoutesByFullPath {
   '/cuenta': typeof AppCuentaRoute
   '/mis-tareas': typeof AppMisTareasRoute
   '/solicitudes': typeof AppSolicitudesRoute
-  '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/usuarios/$userSlug': typeof AppUsuariosUserSlugRoute
   '/tableros': typeof AppTablerosIndexRoute
+  '/usuarios': typeof AppUsuariosIndexRoute
   '/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
   '/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
   '/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
@@ -137,11 +144,12 @@ export interface FileRoutesByTo {
   '/cuenta': typeof AppCuentaRoute
   '/mis-tareas': typeof AppMisTareasRoute
   '/solicitudes': typeof AppSolicitudesRoute
-  '/usuarios': typeof AppUsuariosRoute
   '/': typeof AppIndexRoute
   '/auth': typeof AuthIndexRoute
   '/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/usuarios/$userSlug': typeof AppUsuariosUserSlugRoute
   '/tableros': typeof AppTablerosIndexRoute
+  '/usuarios': typeof AppUsuariosIndexRoute
   '/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
   '/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
   '/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
@@ -157,11 +165,12 @@ export interface FileRoutesById {
   '/_app/cuenta': typeof AppCuentaRoute
   '/_app/mis-tareas': typeof AppMisTareasRoute
   '/_app/solicitudes': typeof AppSolicitudesRoute
-  '/_app/usuarios': typeof AppUsuariosRoute
   '/_app/': typeof AppIndexRoute
   '/auth/': typeof AuthIndexRoute
   '/_app/tableros/$tablero': typeof AppTablerosTableroRoute
+  '/_app/usuarios/$userSlug': typeof AppUsuariosUserSlugRoute
   '/_app/tableros/': typeof AppTablerosIndexRoute
+  '/_app/usuarios/': typeof AppUsuariosIndexRoute
   '/_app/tareas/nueva/digital': typeof AppTareasNuevaDigitalRoute
   '/_app/tareas/nueva/ecommerce': typeof AppTareasNuevaEcommerceRoute
   '/_app/tareas/nueva/especial': typeof AppTareasNuevaEspecialRoute
@@ -177,11 +186,12 @@ export interface FileRouteTypes {
     | '/cuenta'
     | '/mis-tareas'
     | '/solicitudes'
-    | '/usuarios'
     | '/'
     | '/auth'
     | '/tableros/$tablero'
+    | '/usuarios/$userSlug'
     | '/tableros'
+    | '/usuarios'
     | '/tareas/nueva/digital'
     | '/tareas/nueva/ecommerce'
     | '/tareas/nueva/especial'
@@ -195,11 +205,12 @@ export interface FileRouteTypes {
     | '/cuenta'
     | '/mis-tareas'
     | '/solicitudes'
-    | '/usuarios'
     | '/'
     | '/auth'
     | '/tableros/$tablero'
+    | '/usuarios/$userSlug'
     | '/tableros'
+    | '/usuarios'
     | '/tareas/nueva/digital'
     | '/tareas/nueva/ecommerce'
     | '/tareas/nueva/especial'
@@ -214,11 +225,12 @@ export interface FileRouteTypes {
     | '/_app/cuenta'
     | '/_app/mis-tareas'
     | '/_app/solicitudes'
-    | '/_app/usuarios'
     | '/_app/'
     | '/auth/'
     | '/_app/tableros/$tablero'
+    | '/_app/usuarios/$userSlug'
     | '/_app/tableros/'
+    | '/_app/usuarios/'
     | '/_app/tareas/nueva/digital'
     | '/_app/tareas/nueva/ecommerce'
     | '/_app/tareas/nueva/especial'
@@ -252,13 +264,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/usuarios': {
-      id: '/_app/usuarios'
-      path: '/usuarios'
-      fullPath: '/usuarios'
-      preLoaderRoute: typeof AppUsuariosRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/solicitudes': {
@@ -303,11 +308,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTareasRouteRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/usuarios/': {
+      id: '/_app/usuarios/'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof AppUsuariosIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/tableros/': {
       id: '/_app/tableros/'
       path: '/tableros'
       fullPath: '/tableros'
       preLoaderRoute: typeof AppTablerosIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/usuarios/$userSlug': {
+      id: '/_app/usuarios/$userSlug'
+      path: '/usuarios/$userSlug'
+      fullPath: '/usuarios/$userSlug'
+      preLoaderRoute: typeof AppUsuariosUserSlugRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/tableros/$tablero': {
@@ -382,10 +401,11 @@ interface AppRouteRouteChildren {
   AppCuentaRoute: typeof AppCuentaRoute
   AppMisTareasRoute: typeof AppMisTareasRoute
   AppSolicitudesRoute: typeof AppSolicitudesRoute
-  AppUsuariosRoute: typeof AppUsuariosRoute
   AppIndexRoute: typeof AppIndexRoute
   AppTablerosTableroRoute: typeof AppTablerosTableroRoute
+  AppUsuariosUserSlugRoute: typeof AppUsuariosUserSlugRoute
   AppTablerosIndexRoute: typeof AppTablerosIndexRoute
+  AppUsuariosIndexRoute: typeof AppUsuariosIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
@@ -395,10 +415,11 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppCuentaRoute: AppCuentaRoute,
   AppMisTareasRoute: AppMisTareasRoute,
   AppSolicitudesRoute: AppSolicitudesRoute,
-  AppUsuariosRoute: AppUsuariosRoute,
   AppIndexRoute: AppIndexRoute,
   AppTablerosTableroRoute: AppTablerosTableroRoute,
+  AppUsuariosUserSlugRoute: AppUsuariosUserSlugRoute,
   AppTablerosIndexRoute: AppTablerosIndexRoute,
+  AppUsuariosIndexRoute: AppUsuariosIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

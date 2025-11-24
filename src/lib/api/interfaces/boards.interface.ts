@@ -14,3 +14,8 @@ export interface CreateBoardDto {
   slug: string
   color: string
 }
+
+export interface AssignBoardToUserDto {
+  boardId: string
+  userId: string
+}

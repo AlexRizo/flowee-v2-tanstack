@@ -3,7 +3,9 @@ import type { Board } from '@/lib/api/interfaces/boards.interface'
 import { cn } from '@/lib/utils'
 import type { FC } from 'react'
 import { BoardAvatar } from './BoardAvatar'
-import { DeleteBoardDialog } from '../dialogs/deleteBoardDialog'
+import { DeleteBoardDialog } from '../dialogs/DeleteBoardDialog'
+import { UserPlus } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 
 interface Props extends Board {}
 
@@ -18,7 +20,16 @@ export const BoardCard: FC<Props> = ({ id, name, color, prefix, slug }) => {
         <h1 className={cn('text-lg font-semibold', getContrastColor(color))}>
           {name}
         </h1>
-        <DeleteBoardDialog name={name} id={id} />
+        <div className="flex gap-1">
+          <Link
+            to="/tableros/$tablero"
+            params={{ tablero: slug }}
+            className="size-6 bg-white/60 rounded-full flex items-center justify-center cursor-pointer"
+          >
+            <UserPlus size={16} />
+          </Link>
+          <DeleteBoardDialog name={name} id={id} />
+        </div>
         <BoardAvatar prefix={prefix} color={color} />
       </div>
       <div className="bg-white p-2 border-t">

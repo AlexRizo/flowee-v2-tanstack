@@ -1,5 +1,9 @@
 import type { ApiError } from '@/lib/api/api'
-import { createBoard as apiCreateBoard, deleteBoard as apiDeleteBoard, getAllBoards } from '@/lib/api/boards'
+import {
+  createBoard as apiCreateBoard,
+  deleteBoard as apiDeleteBoard,
+  getAllBoards,
+} from '@/lib/api/boards'
 import type {
   Board,
   CreateBoardDto,

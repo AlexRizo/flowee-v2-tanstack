@@ -17,9 +17,10 @@ import type { User } from '@/lib/api/interfaces/users.interface'
 import { useState, type FC } from 'react'
 import { getUserRole, getUserStatus } from '@/helpers/user'
 import { Button } from '../ui/button'
-import { Edit, Trash } from 'lucide-react'
+import { Edit, ExternalLink, Trash } from 'lucide-react'
 import { DeleteUserDialog } from './dialogs/DeleteUserDialog'
 import { UpdateUserDialog } from './dialogs/UpdateUserDialog'
+import { Link } from '@tanstack/react-router'
 
 interface Props {
   users: User[]
@@ -117,6 +118,14 @@ export const UsersTable: FC<Props> = ({ users }) => {
                 >
                   <Trash />
                 </Button>
+                <Link
+                  to="/usuarios/$userSlug"
+                  params={{ userSlug: row.original.username }}
+                >
+                  <Button variant="secondary" size="sm">
+                    <ExternalLink />
+                  </Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))}
