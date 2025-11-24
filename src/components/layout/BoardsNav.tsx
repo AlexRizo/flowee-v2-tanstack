@@ -1,34 +1,20 @@
-import { getMyBoards } from '@/lib/api/boards'
-import type { Board } from '@/lib/api/interfaces/boards.interface'
-import { useQuery } from '@tanstack/react-query'
 import { Spinner } from '../ui/spinner'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
-import type { ApiError } from '@/lib/api/api'
 import { useBoardStore } from '@/store/boardStore'
 import { cn } from '@/lib/utils'
 import { getContrastColor } from '@/helpers/getContrastColor'
+import { useBoards } from '@/hooks/useBoards'
 
 export const BoardsNav = () => {
-  const {
-    setBoards,
-    selectBoard,
-    selectedBoardId,
-  } = useBoardStore()
+  const { setBoards, selectBoard, selectedBoardId } = useBoardStore()
 
-  const {
-    data: boards,
-    isPending,
-    error,
-  } = useQuery<Board[], ApiError>({
-    queryKey: ['my-boards'],
-    queryFn: getMyBoards,
-  })
+  const { boards, isBoardsPending, boardsError } = useBoards()
 
   useEffect(() => {
-    if (error) {
+    if (boardsError) {
       toast.error('Error al cargar los tableros', {
-        description: error.message,
+        description: boardsError.message,
       })
     }
 
@@ -37,7 +23,7 @@ export const BoardsNav = () => {
     }
   }, [boards])
 
-  if (isPending) {
+  if (isBoardsPending) {
     return <Spinner className="absolute left-1/2 -translate-x-1/2" />
   }
 

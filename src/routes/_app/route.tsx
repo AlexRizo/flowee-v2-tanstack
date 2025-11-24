@@ -1,9 +1,11 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { useAuth } from '@/hooks/useAuth'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
-import { connectAppSocket } from '@/lib/ws/appSocket'
+import { appSocket, connectAppSocket } from '@/lib/ws/appSocket'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
@@ -34,6 +36,21 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
+  const { logoutMutate } = useAuth()
+
+  useEffect(() => {
+    const logoutHandler = ({ message }: { message: string }) => {
+      alert(message)
+      logoutMutate()
+    }
+
+    appSocket.on('ws-logout', logoutHandler)
+
+    return () => {
+      appSocket.off('ws-logout', logoutHandler)
+    }
+  }, [])
+
   return (
     <main className="flex">
       <Sidebar />

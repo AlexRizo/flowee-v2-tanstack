@@ -99,23 +99,34 @@ export const DndContainer = () => {
 
     if (fromStatus === toStatus) return
 
+    appSocket.emit('move-task-status', {
+      taskId,
+      fromStatus,
+      toStatus,
+    })
     moveTask(fromStatus as TaskStatus, toStatus as TaskStatus, taskId)
   }
 
   useEffect(() => {
     if (!selectedBoardId) return
 
-    appSocket.emit('joinBoard', { boardId: selectedBoardId })
-
     const handler = (data: UpdateTaskStatusPayload) => {
       console.log('Task status updated:', data)
       moveTask(data.oldStatus, data.newStatus, data.taskId)
     }
 
+    const exceptionHandler = (data: { message: string }) => {
+      toast.error(data.message)
+    }
+
     appSocket.on('updateTaskStatus', handler)
+    appSocket.on('exception-message', exceptionHandler)
+
+    appSocket.emit('join-board', { boardId: selectedBoardId })
 
     return () => {
       appSocket.off('updateTaskStatus', handler)
+      appSocket.off('exception-message', exceptionHandler)
     }
   }, [selectedBoardId])
 
