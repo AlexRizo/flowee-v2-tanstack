@@ -1,15 +1,12 @@
-import { BoardCard } from '@/components/boards/grid/BoardCard'
 import { NotFoundPage } from '@/components/errors/404'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
-import { AssignBoardToUserDialog } from '@/components/users/dialogs/AssignBoardToUserDialog'
-import { UserProp } from '@/components/users/UserProp'
+import { UserBoards } from '@/components/users/profile/UserBoards'
+import { UserProp } from '@/components/users/profile/UserProp'
+import { UserStats } from '@/components/users/profile/UserStats'
 import { getUserRole } from '@/helpers/user'
-import { getUserBoards } from '@/lib/api/boards'
+import { useAdminBoards } from '@/hooks/admin/useAdminBoards'
 import { getUser } from '@/lib/api/users'
-import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { AtSign, Grid2X2Plus, Mail, ShieldUser } from 'lucide-react'
+import { AtSign, Mail, ShieldUser } from 'lucide-react'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -29,23 +26,13 @@ export const Route = createFileRoute('/_app/usuarios/$userSlug')({
 function RouteComponent() {
   const { user } = Route.useLoaderData()
 
-  const {
-    data: boards,
-    isPending,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['boards', user.id],
-    queryFn: () => getUserBoards(user.id),
-    retry: false,
-    staleTime: 1000 * 60 * 5,
-  })
+  const { userBoards } = useAdminBoards(user.id)
 
   useEffect(() => {
-    if (isError) {
-      toast.error(error?.message)
+    if (userBoards.isError) {
+      toast.error(userBoards.error?.message)
     }
-  }, [isError, error, boards])
+  }, [userBoards.isError, userBoards.error])
 
   return (
     <section className="w-full max-w-3xl mx-auto ">
@@ -68,45 +55,12 @@ function RouteComponent() {
           </UserProp>
         </article>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-8">
-        <div className="bg-neutral-100 px-4 py-6 rounded-2xl text-center shadow">
-          <h2 className="font-medium">Tareas resueltas</h2>
-          <p>{500}</p>
-        </div>
-        <div className="bg-neutral-100 px-4 py-6 rounded-2xl text-center shadow">
-          <h2 className="font-medium">Tareas Pendientes</h2>
-          <p>{500}</p>
-        </div>
-        <div className="bg-neutral-100 px-4 py-6 rounded-2xl text-center shadow">
-          <h2 className="font-medium">Tareas en Proceso</h2>
-          <p>{500}</p>
-        </div>
-      </div>
-      <div className="mt-8">
-        <div className="flex justify-between items-center my-3">
-          <h1 className="text-2xl font-semibold">Tableros</h1>
-          <AssignBoardToUserDialog targetId={user.id}>
-            <Button>
-              <Grid2X2Plus />
-              Asignar Tablero
-            </Button>
-          </AssignBoardToUserDialog>
-        </div>
-        <div className="grid grid-cols-3 gap-4 p-4 bg-neutral-100 rounded">
-          {isPending ? (
-            <div className="flex items-center justify-center gap-2 text-neutral-500 text-sm">
-              <Spinner />
-              <p>Cargando tableros...</p>
-            </div>
-          ) : boards?.length ? (
-            boards.map((board) => <BoardCard key={board.id} {...board} />)
-          ) : (
-            <small className="text-neutral-500 text-center">
-              No hay tableros asignados.
-            </small>
-          )}
-        </div>
-      </div>
+      <UserStats />
+      <UserBoards
+        boards={userBoards.data ?? []}
+        isPending={userBoards.isPending}
+        userId={user.id}
+      />
     </section>
   )
 }

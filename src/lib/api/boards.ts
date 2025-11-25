@@ -1,5 +1,10 @@
 import { apiDelete, apiGet, apiPost } from './api'
-import type { AssignBoardToUserDto, Board, CreateBoardDto } from './interfaces/boards.interface'
+import type {
+  AssignBoardToUserDto,
+  Board,
+  CreateBoardDto,
+  LeaveBoardDto,
+} from './interfaces/boards.interface'
 
 // ? El term puede ser el ID o el SLUG del tablero
 export const getBoard = async (term: string) => {
@@ -14,7 +19,10 @@ export const getUserBoards = async (userId: string) => {
   return await apiGet<Board[]>(`/boards/user/${userId}`)
 }
 
-export const assignBoardToUser = async ({ boardId, userId }: AssignBoardToUserDto) => {
+export const assignBoardToUser = async ({
+  boardId,
+  userId,
+}: AssignBoardToUserDto) => {
   return await apiPost<Board>(`/boards/${boardId}/assign`, { userId })
 }
 
@@ -29,4 +37,8 @@ export const createBoard = async (board: CreateBoardDto) => {
 
 export const deleteBoard = async (boardId: string) => {
   return await apiDelete<void>(`/boards/${boardId}`)
+}
+
+export const leaveBoard = async ({ boardId, userId }: LeaveBoardDto) => {
+  return await apiDelete<void>(`/boards/${boardId}/leave-user/${userId}`)
 }

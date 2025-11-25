@@ -19,3 +19,8 @@ export interface AssignBoardToUserDto {
   boardId: string
   userId: string
 }
+
+export interface LeaveBoardDto {
+  boardId: string
+  userId: string
+}
