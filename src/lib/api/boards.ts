@@ -1,8 +1,10 @@
 import { apiDelete, apiGet, apiPost } from './api'
+import type { Role } from './interfaces/auth.interface'
 import type {
   AssignBoardToUserDto,
   Board,
   CreateBoardDto,
+  DesignerBoardUser,
   LeaveBoardDto,
 } from './interfaces/boards.interface'
 
@@ -41,4 +43,10 @@ export const deleteBoard = async (boardId: string) => {
 
 export const leaveBoard = async ({ boardId, userId }: LeaveBoardDto) => {
   return await apiDelete<void>(`/boards/${boardId}/leave-user/${userId}`)
+}
+
+export const getBoardUsers = async (boardId: string, role?: Role) => {
+  return await apiGet<DesignerBoardUser[]>(
+    `/boards/${boardId}/users${role ? `?role=${role}` : ''}`,
+  )
 }

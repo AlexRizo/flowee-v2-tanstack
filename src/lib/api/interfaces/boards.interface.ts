@@ -1,3 +1,5 @@
+import type { User } from "./users.interface"
+
 export interface Board {
   id: string
   name: string
@@ -23,4 +25,12 @@ export interface AssignBoardToUserDto {
 export interface LeaveBoardDto {
   boardId: string
   userId: string
+}
+
+export interface DesignerBoardUser extends User {
+  tasksCount: {
+    pending: number
+    inProgress: number
+    forReview: number
+  }
 }

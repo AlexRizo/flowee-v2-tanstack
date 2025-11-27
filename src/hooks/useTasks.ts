@@ -10,6 +10,7 @@ import {
 } from '@/lib/api/interfaces/tasks.interface'
 import {
   createSpecialTask as createSpecialTaskApi,
+  getPendingTasks,
   getTaskByBoard,
   uploadTaskFiles as uploadTaskFilesApi,
 } from '@/lib/api/tasks'
@@ -106,5 +107,20 @@ export const useTasks = ({ boardId }: Props) => {
     moveTask,
     tasksQuery,
     createSpecialTask,
+  }
+}
+
+export const usePendingTasks = ({ boardId }: Props) => {
+  // const queryClient = useQueryClient()
+
+  const pendingTasksQuery = useQuery<Task[], ApiError>({
+    queryKey: ['pending-tasks', boardId],
+    queryFn: () => getPendingTasks(boardId!),
+    enabled: !!boardId,
+    retry: false,
+  })
+
+  return {
+    pendingTasksQuery,
   }
 }

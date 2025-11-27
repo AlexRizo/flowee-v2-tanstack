@@ -5,6 +5,10 @@ export const getTaskByBoard = async (boardId: string) => {
   return await apiGet<Task[]>(`/tasks/board/${boardId}`)
 }
 
+export const getPendingTasks = async (boardId: string) => {
+  return await apiGet<Task[]>(`/tasks/board/${boardId}/pending`)
+}
+
 export const createSpecialTask = async (newTask: CreateSpecialTaskDTO) => {
   return await apiPost<Task>('/tasks/special', newTask)
 }
