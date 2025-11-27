@@ -25,3 +25,8 @@ export interface CreateUserDto {
 export interface UpdateUserDto extends Partial<CreateUserDto> {
   id: string
 }
+
+export interface AvatarResponse {
+  avatar: string
+  message: string
+}

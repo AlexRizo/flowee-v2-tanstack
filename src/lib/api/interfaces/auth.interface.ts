@@ -6,6 +6,7 @@ export interface LoginDto {
 export interface AuthUser {
   id: string
   name: string
+  avatar?: string
   email: string
   username: string
   role: Role

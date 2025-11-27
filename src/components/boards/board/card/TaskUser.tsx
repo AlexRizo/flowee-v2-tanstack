@@ -3,6 +3,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { env } from '@/env'
 import type { FC } from 'react'
 
 interface Props {
@@ -13,8 +14,16 @@ interface Props {
 export const TaskUser: FC<Props> = ({ name, imageUrl }) => {
   return (
     <Tooltip>
-      <TooltipTrigger className='flex'>
-        <img src={imageUrl ?? '/dashboard/user/default-avatar.webp'} alt="UA" className='size-5 rounded' />
+      <TooltipTrigger className="flex">
+        <img
+          src={
+            imageUrl
+              ? `${env.VITE_CF_URL}${imageUrl}`
+              : '/dashboard/user/default-avatar.webp'
+          }
+          alt="UA"
+          className="size-5 rounded"
+        />
       </TooltipTrigger>
       <TooltipContent>
         <p>{name ?? 'Sin asignar'}</p>

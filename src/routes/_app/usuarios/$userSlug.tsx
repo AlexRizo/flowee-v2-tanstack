@@ -2,6 +2,7 @@ import { NotFoundPage } from '@/components/errors/404'
 import { UserBoards } from '@/components/users/profile/UserBoards'
 import { UserProp } from '@/components/users/profile/UserProp'
 import { UserStats } from '@/components/users/profile/UserStats'
+import { env } from '@/env'
 import { getUserRole } from '@/helpers/user'
 import { useAdminBoards } from '@/hooks/admin/useAdminBoards'
 import { getUser } from '@/lib/api/users'
@@ -38,7 +39,7 @@ function RouteComponent() {
     <section className="w-full max-w-3xl mx-auto ">
       <div role="heading" className="flex gap-4">
         <img
-          src={user.avatar ?? '/dashboard/user/default-avatar.webp'}
+          src={user.avatar ? `${env.VITE_CF_URL}${user.avatar}` : '/dashboard/user/default-avatar.webp'}
           alt="Avatar"
           className="size-32 rounded-full"
         />

@@ -7,6 +7,7 @@ import { es } from 'date-fns/locale'
 import { getContrastColor } from '@/helpers/getContrastColor'
 import { cn } from '@/lib/utils'
 import { CalendarCheck, CalendarPlus } from 'lucide-react'
+import { env } from '@/env'
 
 interface Props extends Task {}
 
@@ -32,7 +33,11 @@ export const OverlayCard: FC<Props> = ({
           </p>
         </span>
         <img
-          src={assignedTo?.avatar ?? '/dashboard/user/default-avatar.webp'}
+          src={
+            assignedTo?.avatar
+              ? `${env.VITE_CF_URL}${assignedTo.avatar}`
+              : '/dashboard/user/default-avatar.webp'
+          }
           alt="UA"
           className="size-5 rounded"
         />
@@ -53,7 +58,11 @@ export const OverlayCard: FC<Props> = ({
       </div>
       <div role="complementary" className="flex gap-1 p-1.5">
         <img
-          src={author?.avatar ?? '/dashboard/user/default-avatar.webp'}
+          src={
+            author?.avatar
+              ? `${env.VITE_CF_URL}${author.avatar}`
+              : '/dashboard/user/default-avatar.webp'
+          }
           alt="UA"
           className="size-5 rounded"
         />
