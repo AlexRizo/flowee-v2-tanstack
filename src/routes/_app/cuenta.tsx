@@ -7,6 +7,7 @@ import { getUserRole } from '@/helpers/user'
 import { useBoards } from '@/hooks/useBoards'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { AtSign, Mail, ShieldUser } from 'lucide-react'
 import { useEffect } from 'react'
@@ -14,28 +15,27 @@ import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_app/cuenta')({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    const authUser = context.queryClient.getQueryData<AuthUser>([
-      'auth',
-      'user',
-    ])
+  loader: ({ context }) => {
+    const user = context.queryClient.getQueryData<AuthUser>(['auth', 'user'])
 
-    if (!authUser) {
+    if (!user) {
       throw new Error('Usuario no autenticado')
     }
 
-    const userData = await context.queryClient.fetchQuery({
-      queryKey: ['user', authUser.id],
-      queryFn: () => getMe(),
-    })
-
-    return { user: userData }
+    return { user }
   },
   errorComponent: NotFoundPage,
 })
 
 function RouteComponent() {
-  const { user } = Route.useLoaderData()
+  const { user: authUser } = Route.useLoaderData()
+
+  const { data: user } = useQuery<AuthUser>({
+    queryKey: ['user', authUser.id],
+    queryFn: () => getMe(),
+    enabled: !!authUser,
+    initialData: authUser,
+  })
 
   const { boards, boardsError, isBoardsPending } = useBoards()
 
