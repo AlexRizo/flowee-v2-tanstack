@@ -17,7 +17,12 @@ import { toast } from 'sonner'
 import { TaskStatus, type Task } from '@/lib/api/interfaces/tasks.interface'
 import { OverlayCard } from './OverlayCard'
 import { appSocket } from '@/lib/ws/appSocket'
-import type { UpdateTaskStatusPayload } from '@/lib/ws/interfaces/ws-task.interface'
+import type {
+  AssignedTaskPayload,
+  UpdateTaskStatusPayload,
+} from '@/lib/ws/interfaces/ws-task.interface'
+import { useAuth } from '@/hooks/useAuth'
+import { Role } from '@/lib/api/interfaces/auth.interface'
 
 interface Column {
   id: TaskStatus
@@ -66,12 +71,16 @@ export const DndContainer = () => {
     }),
   )
 
+  const { user } = useAuth()
+
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [activeStatus, setActiveStatus] = useState<TaskStatus | null>(null)
 
   const { selectedBoardId } = useBoardStore()
 
-  const { tasks, moveTask, tasksQuery } = useTasks({ boardId: selectedBoardId })
+  const { tasks, moveTask, setTask, tasksQuery } = useTasks({
+    boardId: selectedBoardId,
+  })
 
   useEffect(() => {
     if (tasksQuery.isSuccess && tasks.unorder.length === 0) {
@@ -108,7 +117,7 @@ export const DndContainer = () => {
   }
 
   useEffect(() => {
-    if (!selectedBoardId) return
+    if (!selectedBoardId || !user) return
 
     const updateTaskStatusHandler = (data: UpdateTaskStatusPayload) => {
       if (data.clientId === appSocket.id) return
@@ -119,16 +128,33 @@ export const DndContainer = () => {
       toast.error(data.message)
     }
 
+    const assignTaskHandler = ({ task }: AssignedTaskPayload) => {
+      if (user.role === Role.PUBLISHER) return
+
+      setTask(task)
+    }
+
     appSocket.on('task-status-updated', updateTaskStatusHandler)
     appSocket.on('exception-message', exceptionHandler)
+    appSocket.on('task-assigned', assignTaskHandler)
 
-    appSocket.emit('join-board', { boardId: selectedBoardId })
+    const adminRoles: Role[] = [
+      Role.ADMIN,
+      Role.SUPER_ADMIN,
+      Role.READER,
+      Role.DESIGNER_ADMIN,
+      Role.PUBLISHER_ADMIN,
+    ]
+
+    if (adminRoles.includes(user.role)) {
+      appSocket.emit('join-board', { boardId: selectedBoardId })
+    }
 
     return () => {
       appSocket.off('task-status-updated', updateTaskStatusHandler)
       appSocket.off('exception-message', exceptionHandler)
     }
-  }, [selectedBoardId])
+  }, [selectedBoardId, user])
 
   return (
     <DndContext

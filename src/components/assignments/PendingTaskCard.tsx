@@ -1,5 +1,5 @@
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
-import { useEffect, type FC } from 'react'
+import { type FC } from 'react'
 import { cn } from '@/lib/utils'
 import { TaskUser } from '../boards/board/card/TaskUser'
 import { DateTask } from '../boards/board/card/DateTask'

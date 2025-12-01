@@ -70,6 +70,20 @@ export const useTasks = ({ boardId }: Props) => {
     })
   }
 
+  const setTask = (task: Task) => {
+    setLocalOrder((prev) => {
+      const updated = structuredClone(prev)
+
+      const index = updated[task.status].findIndex((t) => t.id === task.id)
+
+      if (index === -1) return prev
+
+      updated[task.status][index] = task
+
+      return updated
+    })
+  }
+
   const createSpecialTask = useMutation<
     CreateTaskResponse,
     ApiError,
@@ -105,6 +119,7 @@ export const useTasks = ({ boardId }: Props) => {
       order: localOrder,
     },
     moveTask,
+    setTask,
     tasksQuery,
     createSpecialTask,
   }

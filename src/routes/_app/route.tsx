@@ -6,6 +6,7 @@ import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
 import { appSocket, connectAppSocket } from '@/lib/ws/appSocket'
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
@@ -40,14 +41,26 @@ function RouteComponent() {
 
   useEffect(() => {
     const logoutHandler = ({ message }: { message: string }) => {
-      alert(message)
+      toast.info('Aviso de sesión', {
+        description: message,
+        position: 'top-center',
+      })
       logoutMutate()
     }
 
+    const notificationHandler = ({ message }: { message: string }) => {
+      toast.info('Notification', {
+        description: message,
+        position: 'top-right',
+      })
+    }
+
     appSocket.on('ws-logout', logoutHandler)
+    appSocket.on('notification', notificationHandler)
 
     return () => {
       appSocket.off('ws-logout', logoutHandler)
+      appSocket.off('notification', notificationHandler)
     }
   }, [])
 
