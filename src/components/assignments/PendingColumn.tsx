@@ -2,14 +2,18 @@ import type { Task } from '@/lib/api/interfaces/tasks.interface'
 import { Clock } from 'lucide-react'
 import type { FC } from 'react'
 import { PendingTaskCard } from './PendingTaskCard'
+import { useDroppable } from '@dnd-kit/core'
 
 interface Props {
   pendingTasks: Task[]
 }
 
 export const PendingColumn: FC<Props> = ({ pendingTasks = [] }) => {
+  const { setNodeRef } = useDroppable({ id: 'PENDING' })
+
   return (
     <div
+      ref={setNodeRef}
       role="grid"
       className="h-full w-[250px] bg-white rounded-sm shadow overflow-hidden"
     >
@@ -25,7 +29,7 @@ export const PendingColumn: FC<Props> = ({ pendingTasks = [] }) => {
       <div role="contentinfo" className="p-2 flex flex-col gap-2">
         {pendingTasks.length > 0 ? (
           pendingTasks.map((task) => (
-            <PendingTaskCard key={task.id} {...task}/>
+            <PendingTaskCard key={task.id} {...task} />
           ))
         ) : (
           <p className="text-center text-sm text-gray-500">

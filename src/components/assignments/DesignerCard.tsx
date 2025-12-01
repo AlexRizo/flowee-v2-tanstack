@@ -4,6 +4,7 @@ import { WorkspaceAlert } from './WorkspaceAlert'
 import type { FC } from 'react'
 import type { DesignerBoardUser } from '@/lib/api/interfaces/boards.interface'
 import { cn } from '@/lib/utils'
+import { useDroppable } from '@dnd-kit/core'
 
 interface Props extends DesignerBoardUser {}
 
@@ -11,8 +12,14 @@ export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount }) => {
   const tasksCountTotal =
     tasksCount.pending + tasksCount.inProgress + tasksCount.forReview
 
+  const { setNodeRef, isOver } = useDroppable({ id })
+
   return (
-    <div role="gridcell" className="w-[250px] h-max bg-white rounded-sm shadow">
+    <div
+      role="gridcell"
+      className="w-[250px] h-max bg-white rounded-sm shadow"
+      ref={setNodeRef}
+    >
       <div
         role="heading"
         className={cn(
@@ -44,7 +51,10 @@ export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount }) => {
         </article>
         <div
           role="cell"
-          className="flex flex-col items-center justify-center h-25 w-full border border-dashed rounded-sm bg-gray-50"
+          className={cn(
+            'flex flex-col items-center justify-center h-25 w-full border border-dashed rounded-sm bg-gray-50',
+            isOver && 'border-violet-500',
+          )}
         >
           <Rocket size={24} />
           <p className="text-xs">Asignar</p>

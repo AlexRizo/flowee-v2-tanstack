@@ -1,5 +1,5 @@
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
-import type { FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { cn } from '@/lib/utils'
 import { TaskUser } from '../boards/board/card/TaskUser'
 import { DateTask } from '../boards/board/card/DateTask'
@@ -18,7 +18,6 @@ export const PendingTaskCard: FC<Props> = ({
   description,
   createdAt,
   dueDate,
-  status,
   priority,
   type,
   board,
@@ -26,7 +25,7 @@ export const PendingTaskCard: FC<Props> = ({
 }) => {
   const { setNodeRef, listeners, attributes, transform, isDragging } =
     useDraggable({
-      id: `${status}|${id}`,
+      id,
     })
 
   const style = transform
