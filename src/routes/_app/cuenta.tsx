@@ -45,10 +45,6 @@ function RouteComponent() {
     }
   }, [boardsError])
 
-  useEffect(() => {
-    console.log(user.avatar)
-  }, [user.avatar])
-
   return (
     <section className="w-full max-w-3xl mx-auto ">
       <section className="w-full max-w-3xl mx-auto ">

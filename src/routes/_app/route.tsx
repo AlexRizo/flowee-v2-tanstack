@@ -1,6 +1,5 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
-import { useAuth } from '@/hooks/useAuth'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
 import { appSocket, connectAppSocket } from '@/lib/ws/appSocket'
@@ -37,17 +36,7 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
-  const { logoutMutate } = useAuth()
-
   useEffect(() => {
-    const logoutHandler = ({ message }: { message: string }) => {
-      toast.info('Aviso de sesión', {
-        description: message,
-        position: 'top-center',
-      })
-      logoutMutate()
-    }
-
     const notificationHandler = ({ message }: { message: string }) => {
       toast.info('Notification', {
         description: message,
@@ -55,12 +44,16 @@ function RouteComponent() {
       })
     }
 
-    appSocket.on('ws-logout', logoutHandler)
+    const exceptionHandler = (data: { message: string }) => {
+      toast.error(data.message)
+    }
+
     appSocket.on('notification', notificationHandler)
+    appSocket.on('exception-message', exceptionHandler)
 
     return () => {
-      appSocket.off('ws-logout', logoutHandler)
       appSocket.off('notification', notificationHandler)
+      appSocket.off('exception-message', exceptionHandler)
     }
   }, [])
 

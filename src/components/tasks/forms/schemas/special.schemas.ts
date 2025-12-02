@@ -80,7 +80,6 @@ export const technicalDetailsSchema = z.object({
     .refine(
       (files) =>
         files.every((file) => {
-          console.log(file)
           return DEFAULT_MIME_TYPES.includes(file.type)
         }),
       {

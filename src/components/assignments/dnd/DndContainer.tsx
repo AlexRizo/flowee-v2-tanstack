@@ -12,10 +12,11 @@ import { DesignerCard } from '../DesignerCard'
 import { useBoardStore } from '@/store/boardStore'
 import { usePendingTasks } from '@/hooks/useTasks'
 import { useAssignments } from '@/hooks/useAssignments'
-import { useEffect, useState } from 'react'
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
 import { useQueryClient } from '@tanstack/react-query'
 import { PendingTaskCard } from '../PendingTaskCard'
+import { appSocket } from '@/lib/ws/appSocket'
+import { useState } from 'react'
 
 export const DndContainer = () => {
   const sensors = useSensors(
@@ -32,12 +33,6 @@ export const DndContainer = () => {
   const { pendingTasksQuery } = usePendingTasks({ boardId: selectedBoardId })
 
   const { boardDesigners } = useAssignments(selectedBoardId)
-
-  useEffect(() => {
-    if (!boardDesigners.users) return
-
-    console.log(boardDesigners.users)
-  }, [boardDesigners.users])
 
   const handleDragStart = (event: DragStartEvent) => {
     const id = event.active.id
@@ -65,7 +60,10 @@ export const DndContainer = () => {
       },
     )
 
-    console.log(active.id, over.id)
+    appSocket.emit('assign-task', {
+      taskId,
+      userId: over.id,
+    })
   }
 
   return (

@@ -251,7 +251,6 @@ const DescriptionAndReferences: FC<FormProps> = ({
                     initialFiles={specialTask.referenceFiles}
                     onChange={(files) => {
                       field.onChange(Array.from(files))
-                      console.log(form.getValues('referenceFiles'))
                     }}
                     name="referenceFiles"
                   />

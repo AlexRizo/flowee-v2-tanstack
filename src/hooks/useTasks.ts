@@ -74,11 +74,15 @@ export const useTasks = ({ boardId }: Props) => {
     setLocalOrder((prev) => {
       const updated = structuredClone(prev)
 
-      const index = updated[task.status].findIndex((t) => t.id === task.id)
+      const destinationColumn = updated[task.status]
 
-      if (index === -1) return prev
+      const taskIndex = destinationColumn.findIndex((t) => t.id === task.id)
 
-      updated[task.status][index] = task
+      if (taskIndex !== -1) {
+        destinationColumn[taskIndex] = task
+      } else {
+        destinationColumn.push(task)
+      }
 
       return updated
     })

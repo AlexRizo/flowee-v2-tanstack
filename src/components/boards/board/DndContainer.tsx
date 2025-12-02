@@ -22,7 +22,6 @@ import type {
   UpdateTaskStatusPayload,
 } from '@/lib/ws/interfaces/ws-task.interface'
 import { useAuth } from '@/hooks/useAuth'
-import { Role } from '@/lib/api/interfaces/auth.interface'
 
 interface Column {
   id: TaskStatus
@@ -124,35 +123,17 @@ export const DndContainer = () => {
       moveTask(data.fromStatus, data.toStatus, data.taskId)
     }
 
-    const exceptionHandler = (data: { message: string }) => {
-      toast.error(data.message)
-    }
-
     const assignTaskHandler = ({ task }: AssignedTaskPayload) => {
-      if (user.role === Role.PUBLISHER) return
-
       setTask(task)
     }
 
     appSocket.on('task-status-updated', updateTaskStatusHandler)
-    appSocket.on('exception-message', exceptionHandler)
     appSocket.on('task-assigned', assignTaskHandler)
 
-    const adminRoles: Role[] = [
-      Role.ADMIN,
-      Role.SUPER_ADMIN,
-      Role.READER,
-      Role.DESIGNER_ADMIN,
-      Role.PUBLISHER_ADMIN,
-    ]
-
-    if (adminRoles.includes(user.role)) {
-      appSocket.emit('join-board', { boardId: selectedBoardId })
-    }
+    appSocket.emit('join-board', { boardId: selectedBoardId })
 
     return () => {
       appSocket.off('task-status-updated', updateTaskStatusHandler)
-      appSocket.off('exception-message', exceptionHandler)
     }
   }, [selectedBoardId, user])
 
