@@ -33,31 +33,31 @@ interface Column {
 const columns: Column[] = [
   {
     id: TaskStatus.PENDING,
-    name: 'Column 1',
+    name: 'Pendiente',
     color: 'bg-gray-500',
     columnBackground: 'bg-gray-100',
   },
   {
     id: TaskStatus.ATTENTION,
-    name: 'Column 2',
+    name: 'Atención',
     color: 'bg-yellow-500',
     columnBackground: 'bg-yellow-50',
   },
   {
     id: TaskStatus.IN_PROGRESS,
-    name: 'Column 3',
+    name: 'En progreso',
     color: 'bg-blue-500',
     columnBackground: 'bg-blue-50',
   },
   {
     id: TaskStatus.FOR_REVIEW,
-    name: 'Column 4',
+    name: 'Para revisión',
     color: 'bg-violet-500',
     columnBackground: 'bg-violet-50',
   },
   {
     id: TaskStatus.DONE,
-    name: 'Column 5',
+    name: 'Hecho',
     color: 'bg-green-500',
     columnBackground: 'bg-green-50',
   },
@@ -119,6 +119,7 @@ export const DndContainer = () => {
     if (!selectedBoardId || !user) return
 
     const updateTaskStatusHandler = (data: UpdateTaskStatusPayload) => {
+      console.log(data)
       if (data.clientId === appSocket.id) return
       moveTask(data.fromStatus, data.toStatus, data.taskId)
     }
@@ -127,13 +128,23 @@ export const DndContainer = () => {
       setTask(task)
     }
 
-    appSocket.on('task-status-updated', updateTaskStatusHandler)
+    const handleJoinBoard = () => {
+      appSocket.emit('join-board', { boardId: selectedBoardId })
+    }
+
+    if (appSocket.connected) {
+      handleJoinBoard()
+    }
+
+    appSocket.on('connect', handleJoinBoard)
+
+    appSocket.on('task-moved', updateTaskStatusHandler)
     appSocket.on('task-assigned', assignTaskHandler)
 
-    appSocket.emit('join-board', { boardId: selectedBoardId })
-
     return () => {
-      appSocket.off('task-status-updated', updateTaskStatusHandler)
+      appSocket.off('connect', handleJoinBoard)
+      appSocket.off('task-moved', updateTaskStatusHandler)
+      appSocket.off('task-assigned', assignTaskHandler)
     }
   }, [selectedBoardId, user])
 

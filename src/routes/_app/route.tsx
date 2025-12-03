@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { useWebSocket } from '@/hooks/useWebSocket'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
 import { appSocket, connectAppSocket } from '@/lib/ws/appSocket'
@@ -36,6 +37,8 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
+  useWebSocket()
+
   useEffect(() => {
     const notificationHandler = ({ message }: { message: string }) => {
       toast.info('Notification', {
