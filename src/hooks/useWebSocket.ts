@@ -1,5 +1,9 @@
 import { api } from '@/lib/api/api'
-import { appSocket } from '@/lib/ws/appSocket'
+import {
+  appSocket,
+  processEventQueue,
+  queueFailedEvents,
+} from '@/lib/ws/appSocket'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -10,13 +14,14 @@ export const useWebSocket = () => {
         err?.message === 'Unauthorized' ||
         err?.message?.includes('jwt expired')
       ) {
-        console.warn('JWT expired... Reconnecting...')
+        console.warn('Error de autenticación')
+        queueFailedEvents()
+
         try {
           if (appSocket.connected) appSocket.disconnect()
 
           await api.post('/auth/refresh')
 
-          console.log('Reconectado')
           appSocket.connect()
         } catch (error) {
           console.error(error)
@@ -27,12 +32,22 @@ export const useWebSocket = () => {
       }
     }
 
+    const handleReconnect = () => {
+      setTimeout(() => {
+        console.log('reprocesando eventos...')
+        processEventQueue()
+      }, 500)
+    }
+
+    appSocket.on('connect', handleReconnect)
+
     appSocket.on('connect_error', handlerAuthError)
     appSocket.on('exception', handlerAuthError)
 
     return () => {
       appSocket.off('connect_error', handlerAuthError)
       appSocket.off('exception', handlerAuthError)
+      appSocket.off('connect', handleReconnect)
     }
   }, [])
 }

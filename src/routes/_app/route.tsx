@@ -41,7 +41,7 @@ function RouteComponent() {
 
   useEffect(() => {
     const notificationHandler = ({ message }: { message: string }) => {
-      toast.info('Notification', {
+      toast.info('Nueva Notificación', {
         description: message,
         position: 'top-right',
       })

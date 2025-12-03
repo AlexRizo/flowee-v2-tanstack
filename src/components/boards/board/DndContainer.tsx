@@ -119,7 +119,7 @@ export const DndContainer = () => {
     if (!selectedBoardId || !user) return
 
     const updateTaskStatusHandler = (data: UpdateTaskStatusPayload) => {
-      console.log(data)
+      console.log(data.taskId)
       if (data.clientId === appSocket.id) return
       moveTask(data.fromStatus, data.toStatus, data.taskId)
     }
