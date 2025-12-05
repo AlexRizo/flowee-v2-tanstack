@@ -22,6 +22,7 @@ import type {
   UpdateTaskStatusPayload,
 } from '@/lib/ws/interfaces/ws-task.interface'
 import { useAuth } from '@/hooks/useAuth'
+import { Role } from '@/lib/api/interfaces/auth.interface'
 
 interface Column {
   id: TaskStatus
@@ -116,10 +117,10 @@ export const DndContainer = () => {
   }
 
   useEffect(() => {
-    if (!selectedBoardId || !user) return
+    if (!selectedBoardId) return
 
     const updateTaskStatusHandler = (data: UpdateTaskStatusPayload) => {
-      console.log(data.taskId)
+      console.log('recibiendo emisión')
       if (data.clientId === appSocket.id) return
       moveTask(data.fromStatus, data.toStatus, data.taskId)
     }
@@ -129,6 +130,17 @@ export const DndContainer = () => {
     }
 
     const handleJoinBoard = () => {
+      const allowedRoles: Role[] = [
+        Role.ADMIN,
+        Role.DESIGNER_ADMIN,
+        Role.PUBLISHER_ADMIN,
+        Role.READER,
+        Role.SUPER_ADMIN,
+      ]
+
+      if (!user) return
+
+      if (!allowedRoles.includes(user.role)) return
       appSocket.emit('join-board', { boardId: selectedBoardId })
     }
 
@@ -146,7 +158,7 @@ export const DndContainer = () => {
       appSocket.off('task-moved', updateTaskStatusHandler)
       appSocket.off('task-assigned', assignTaskHandler)
     }
-  }, [selectedBoardId, user])
+  }, [selectedBoardId, user, appSocket])
 
   return (
     <DndContext

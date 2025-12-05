@@ -14,7 +14,6 @@ export const useWebSocket = () => {
         err?.message === 'Unauthorized' ||
         err?.message?.includes('jwt expired')
       ) {
-        console.warn('Error de autenticación')
         queueFailedEvents()
 
         try {
@@ -34,7 +33,6 @@ export const useWebSocket = () => {
 
     const handleReconnect = () => {
       setTimeout(() => {
-        console.log('reprocesando eventos...')
         processEventQueue()
       }, 500)
     }

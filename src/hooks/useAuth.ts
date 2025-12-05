@@ -2,6 +2,7 @@ import type { ApiError } from '@/lib/api/api'
 import { login, logout } from '@/lib/api/auth'
 import type { AuthUser, LoginDto } from '@/lib/api/interfaces/auth.interface'
 import { disconnectAppSocket } from '@/lib/ws/appSocket'
+import { useBoardStore } from '@/store/boardStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
@@ -11,6 +12,8 @@ export const useAuth = () => {
   const queryClient = useQueryClient()
 
   const user = queryClient.getQueryData<AuthUser>(['auth', 'user'])
+
+  const { clearBoard } = useBoardStore()
 
   const {
     mutate: loginMutate,
@@ -32,6 +35,7 @@ export const useAuth = () => {
     mutationFn: logout,
     onSuccess: () => {
       queryClient.clear()
+      clearBoard()
       disconnectAppSocket()
       navigate({ to: '/auth' })
     },

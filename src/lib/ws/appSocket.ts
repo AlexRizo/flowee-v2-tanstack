@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client'
 
 interface WsEvent {
   event: string
-  data: any
+  data: any[]
 }
 
 export const appSocket: Socket = io(env.VITE_SOCKET_URL, {
@@ -12,23 +12,21 @@ export const appSocket: Socket = io(env.VITE_SOCKET_URL, {
   withCredentials: true,
 })
 
-export const eventsQueue: Array<WsEvent> = []
-
+export const eventsQueue: WsEvent[] = []
 let lastEmittedEvent: WsEvent | null = null
 
-const originalEmit = appSocket.emit
+const originalEmit = appSocket.emit.bind(appSocket)
 
-appSocket.emit = function (event: string, ...args: any[]) {
+appSocket.emit = (event: string, ...args: any[]) => {
   if (event !== 'connect' && event !== 'disconnect') {
     lastEmittedEvent = { event, data: args }
   }
 
-  return originalEmit.apply(this, [event, ...args])
+  return originalEmit(event, ...args)
 }
 
 export const queueFailedEvents = () => {
   if (lastEmittedEvent) {
-    console.log('guardando eventos fallidos...')
     eventsQueue.push(lastEmittedEvent)
     lastEmittedEvent = null
   }
@@ -36,9 +34,8 @@ export const queueFailedEvents = () => {
 
 export const processEventQueue = () => {
   if (eventsQueue.length > 0) {
-    console.log('reintentando eventos fallidos...')
-    eventsQueue.forEach((event) => {
-      originalEmit.apply(appSocket, [event.event, ...event.data])
+    eventsQueue.forEach((ev) => {
+      originalEmit(ev.event, ...ev.data)
     })
     eventsQueue.length = 0
   }
