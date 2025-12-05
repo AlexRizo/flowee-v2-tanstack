@@ -6,6 +6,7 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
+import { Error404 } from '@/components/errors/Error404'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -29,5 +30,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         ]}
       />
     </>
+  ),
+  notFoundComponent: () => (
+    <Error404 error={new Error('El recurso no se existe')} />
   ),
 })

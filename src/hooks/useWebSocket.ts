@@ -47,5 +47,5 @@ export const useWebSocket = () => {
       appSocket.off('exception', handlerAuthError)
       appSocket.off('connect', handleReconnect)
     }
-  }, [])
+  }, [appSocket])
 }

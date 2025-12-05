@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@/components/errors/404'
+import { ApiErrorComponent } from '@/components/errors/ApiErrorComponent'
 import { UserBoards } from '@/components/users/profile/UserBoards'
 import { UserProp } from '@/components/users/profile/UserProp'
 import { UserStats } from '@/components/users/profile/UserStats'
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/_app/usuarios/$userSlug')({
 
     return { user }
   },
-  errorComponent: NotFoundPage,
+  errorComponent: ApiErrorComponent,
 })
 
 function RouteComponent() {
@@ -39,7 +39,11 @@ function RouteComponent() {
     <section className="w-full max-w-3xl mx-auto ">
       <div role="heading" className="flex gap-4">
         <img
-          src={user.avatar ? `${env.VITE_CF_URL}${user.avatar}` : '/dashboard/user/default-avatar.webp'}
+          src={
+            user.avatar
+              ? `${env.VITE_CF_URL}${user.avatar}`
+              : '/dashboard/user/default-avatar.webp'
+          }
           alt="Avatar"
           className="size-32 rounded-full"
         />

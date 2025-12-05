@@ -1,6 +1,6 @@
 import { getBoard } from '@/lib/api/boards'
 import { createFileRoute } from '@tanstack/react-router'
-import { NotFoundPage } from '@/components/errors/404'
+import { ApiErrorComponent } from '@/components/errors/ApiErrorComponent'
 import { cn } from '@/lib/utils'
 import { getContrastColor } from '@/helpers/getContrastColor'
 
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_app/tableros/$tablero')({
 
     return { board }
   },
-  errorComponent: NotFoundPage,
+  errorComponent: ApiErrorComponent,
 })
 
 function Tablero() {

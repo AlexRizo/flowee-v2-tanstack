@@ -1,6 +1,6 @@
 import { MyBoards } from '@/components/account/MyBoards'
 import { UploadAvatar } from '@/components/account/UploadAvatar'
-import { NotFoundPage } from '@/components/errors/404'
+import { ApiErrorComponent } from '@/components/errors/ApiErrorComponent'
 import { UserProp } from '@/components/users/profile/UserProp'
 import { UserStats } from '@/components/users/profile/UserStats'
 import { getUserRole } from '@/helpers/user'
@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_app/cuenta')({
 
     return { user }
   },
-  errorComponent: NotFoundPage,
+  errorComponent: ApiErrorComponent,
 })
 
 function RouteComponent() {
