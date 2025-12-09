@@ -1,3 +1,4 @@
+import { Error404 } from '@/components/errors/Error404'
 import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { useWebSocket } from '@/hooks/useWebSocket'
@@ -34,6 +35,7 @@ export const Route = createFileRoute('/_app')({
       })
     }
   },
+  notFoundComponent: () => <Error404/>,
 })
 
 function RouteComponent() {

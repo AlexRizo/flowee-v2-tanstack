@@ -4,6 +4,7 @@ import { Navlink } from './Navlink'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
+import { ProtectedItem } from '../protected/ProtectedItem'
 
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -41,12 +42,15 @@ export const Sidebar = () => {
             Centro de control
           </small>
           <Navlink to="/" icon="home" label="Inicio" collapsed={isCollapsed} />
-          <Navlink
-            to="/centro-de-asignaciones"
-            icon="git-pull-request-create-arrow"
-            label="Centro de asignaciones"
-            collapsed={isCollapsed}
-          />
+
+          <ProtectedItem role="managers">
+            <Navlink
+              to="/centro-de-asignaciones"
+              icon="git-pull-request-create-arrow"
+              label="Centro de asignaciones"
+              collapsed={isCollapsed}
+            />
+          </ProtectedItem>
           <Navlink
             to="/mis-tareas"
             icon="rocket"
@@ -69,18 +73,22 @@ export const Sidebar = () => {
           >
             Configuración
           </small>
-          <Navlink
-            to="/usuarios"
-            icon="users"
-            label="Usuarios"
-            collapsed={isCollapsed}
-          />
-          <Navlink
-            to="/tableros"
-            icon="folder-tree"
-            label="Tableros"
-            collapsed={isCollapsed}
-          />
+          <ProtectedItem role="admins">
+            <Navlink
+              to="/usuarios"
+              icon="users"
+              label="Usuarios"
+              collapsed={isCollapsed}
+            />
+          </ProtectedItem>
+          <ProtectedItem role="admins">
+            <Navlink
+              to="/tableros"
+              icon="folder-tree"
+              label="Tableros"
+              collapsed={isCollapsed}
+            />
+          </ProtectedItem>
           <Navlink
             to="/cuenta"
             icon="user"

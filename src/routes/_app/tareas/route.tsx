@@ -1,8 +1,27 @@
+import { isPublisherAndDesignerManager } from '@/helpers/protected'
 import { useTaskStore } from '@/store/taskStore'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  notFound,
+  Outlet,
+  redirect,
+} from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/tareas')({
   component: RouteComponent,
+  beforeLoad: ({ context }) => {
+    const user = context.user
+
+    if (!user) {
+      return redirect({ to: '/auth' })
+    }
+
+    const isAllowed = isPublisherAndDesignerManager(user.role)
+
+    if (!isAllowed) {
+      throw notFound({ routeId: '__root__' })
+    }
+  },
 })
 
 function RouteComponent() {

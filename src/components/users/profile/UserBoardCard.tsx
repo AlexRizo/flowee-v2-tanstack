@@ -5,6 +5,7 @@ import type { FC } from 'react'
 import { BoardAvatar } from '@/components/boards/grid/BoardAvatar'
 import { UserMinus } from 'lucide-react'
 import { useAdminBoards } from '@/hooks/admin/useAdminBoards'
+import { ProtectedItem } from '@/components/protected/ProtectedItem'
 
 interface Props extends Board {
   userId: string
@@ -29,12 +30,14 @@ export const UserBoardCard: FC<Props> = ({
         <h1 className={cn('text-lg font-semibold', getContrastColor(color))}>
           {name}
         </h1>
-        <button
-          onClick={() => leaveBoard.mutate({ boardId: id, userId })}
-          className="size-6 bg-white/60 rounded-full flex items-center justify-center cursor-pointer"
-        >
-          <UserMinus size={16} />
-        </button>
+        <ProtectedItem role="admins">
+          <button
+            onClick={() => leaveBoard.mutate({ boardId: id, userId })}
+            className="size-6 bg-white/60 rounded-full flex items-center justify-center cursor-pointer"
+          >
+            <UserMinus size={16} />
+          </button>
+        </ProtectedItem>
         <BoardAvatar prefix={prefix} color={color} />
       </div>
       <div className="bg-white p-2 border-t">

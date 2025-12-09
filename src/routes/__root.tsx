@@ -31,7 +31,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       />
     </>
   ),
-  notFoundComponent: () => (
-    <Error404 error={new Error('El recurso no se existe')} />
-  ),
+  notFoundComponent: () => <Error404 />,
 })
