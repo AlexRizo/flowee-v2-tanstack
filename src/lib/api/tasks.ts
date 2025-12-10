@@ -1,9 +1,17 @@
 import { apiGet, apiPost } from './api'
 import type {
   CreateSpecialTaskDTO,
+  GetTasksDTO,
   Task,
   UploadTaskFilesDTO,
 } from './interfaces/tasks.interface'
+
+export const getTasks = async ({
+  boardId,
+  assigned = true,
+}: GetTasksDTO) => {
+  return await apiGet<Task[]>(`/tasks?boardId=${boardId}&assigned=${assigned}`)
+}
 
 export const getMyTasksByBoard = async (boardId: string) => {
   return await apiGet<Task[]>(`/tasks/my-tasks/board/${boardId}`)

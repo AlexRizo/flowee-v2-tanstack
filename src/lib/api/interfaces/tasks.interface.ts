@@ -87,3 +87,9 @@ export interface TasksResult {
   unorder: Task[]
   order: OrderTasks
 }
+
+export interface GetTasksDTO {
+  boardId?: string
+  userId?: string
+  assigned?: boolean
+}
