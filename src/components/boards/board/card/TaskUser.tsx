@@ -22,7 +22,7 @@ export const TaskUser: FC<Props> = ({ name, imageUrl }) => {
               : '/dashboard/user/default-avatar.webp'
           }
           alt="UA"
-          className="size-5 rounded"
+          className="size-5 rounded object-cover"
         />
       </TooltipTrigger>
       <TooltipContent>

@@ -120,12 +120,12 @@ export const DndContainer = () => {
     if (!selectedBoardId) return
 
     const updateTaskStatusHandler = (data: UpdateTaskStatusPayload) => {
-      console.log('recibiendo emisión')
       if (data.clientId === appSocket.id) return
       moveTask(data.fromStatus, data.toStatus, data.taskId)
     }
 
     const assignTaskHandler = ({ task }: AssignedTaskPayload) => {
+      console.log(task)
       setTask(task)
     }
 

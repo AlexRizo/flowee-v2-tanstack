@@ -11,7 +11,7 @@ import {
 import {
   createSpecialTask as createSpecialTaskApi,
   getPendingTasks,
-  getTaskByBoard,
+  getMyTasksByBoard,
   uploadTaskFiles as uploadTaskFilesApi,
 } from '@/lib/api/tasks'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -35,7 +35,7 @@ export const useTasks = ({ boardId }: Props) => {
 
   const tasksQuery = useQuery<Task[], ApiError, TasksResult>({
     queryKey: ['tasks', boardId],
-    queryFn: async () => await getTaskByBoard(boardId!),
+    queryFn: async () => await getMyTasksByBoard(boardId!),
     enabled: !!boardId,
     retry: false,
     select: (tasks) => groupTasksByStatus(tasks),
@@ -83,6 +83,14 @@ export const useTasks = ({ boardId }: Props) => {
       } else {
         destinationColumn.push(task)
       }
+
+      queryClient.setQueryData(['tasks', boardId], (oldData: Task[]) => {
+        if (!oldData) return oldData
+
+        return oldData.map((t) =>
+          t.id === task.id ? { ...t, status: task.status } : t,
+        )
+      })
 
       return updated
     })
