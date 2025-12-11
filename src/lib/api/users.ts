@@ -27,8 +27,6 @@ export const updateUser = async ({ id, ...user }: UpdateUserDto) => {
   return await apiPatch<User>(`/users/${id}`, user)
 }
 
-
-
 export const uploadAvatar = async (id: string, file: File) => {
   const formData = new FormData()
   formData.append('avatar', file)

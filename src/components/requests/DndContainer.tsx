@@ -23,6 +23,7 @@ import type {
 } from '@/lib/ws/interfaces/ws-task.interface'
 import { useAuth } from '@/hooks/useAuth'
 import { Role } from '@/lib/api/interfaces/auth.interface'
+import { useUserStore } from '@/store/userStore'
 
 interface Column {
   id: TaskStatus
@@ -65,6 +66,8 @@ const columns: Column[] = [
 ]
 
 export const DndContainer = () => {
+  const { selectedUserId } = useUserStore()
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
@@ -80,7 +83,7 @@ export const DndContainer = () => {
 
   const { tasks, moveTask, setTask, managerTasksQuery } = useManagerTasks({
     boardId: selectedBoardId,
-    userId: user?.id,
+    userId: selectedUserId,
     role: user?.role,
   })
 

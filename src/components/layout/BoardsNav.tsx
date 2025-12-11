@@ -24,11 +24,11 @@ export const BoardsNav = () => {
   }, [boards])
 
   if (isBoardsPending) {
-    return <Spinner className="absolute left-1/2 -translate-x-1/2" />
+    return <Spinner />
   }
 
   return (
-    <div className="border rounded-full p-2 flex gap-2 absolute left-1/2 -translate-x-1/2">
+    <div className="border rounded-full p-2 flex gap-2">
       {boards?.map((board) => (
         <button
           key={board.id}
