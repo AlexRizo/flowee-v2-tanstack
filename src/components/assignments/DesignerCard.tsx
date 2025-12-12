@@ -8,7 +8,7 @@ import { useDroppable } from '@dnd-kit/core'
 
 interface Props extends DesignerBoardUser {}
 
-export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount }) => {
+export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount, avatar }) => {
   const tasksCountTotal =
     tasksCount.pending + tasksCount.inProgress + tasksCount.forReview
 
@@ -28,7 +28,7 @@ export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount }) => {
           tasksCountTotal >= 10 && 'border-red-500',
         )}
       >
-        <TaskUser name={name} />
+        <TaskUser name={name} imageUrl={avatar} />
         <h1 className="text-white font-medium text-sm">
           {username + ' '}
           <span className="text-xs font-normal">({tasksCountTotal})</span>
