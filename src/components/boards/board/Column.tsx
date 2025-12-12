@@ -4,9 +4,10 @@ import { cn } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { type FC } from 'react'
-import { Card } from './Card'
+import { Card } from './card/Card'
 import { useDroppable } from '@dnd-kit/core'
 import { ProtectedItem } from '@/components/protected/ProtectedItem'
+import { useTaskViewStore } from '@/store/taskViewStore'
 
 interface Props {
   id: TaskStatus
@@ -24,6 +25,7 @@ export const Column: FC<Props> = ({
   items = [],
 }) => {
   const { setNodeRef, isOver } = useDroppable({ id })
+  const { setTask } = useTaskViewStore()
 
   return (
     <div className={cn('rounded-md h-max min-w-62.5 p-2', columnBackground)}>
@@ -51,7 +53,7 @@ export const Column: FC<Props> = ({
         ref={setNodeRef}
       >
         {items.map((item) => (
-          <Card key={item.id} {...item} />
+          <Card key={item.id} {...item} onClick={() => setTask(item)} />
         ))}
         {isOver && (
           <div className="w-[230px] h-[146px] border border-dashed border-purple-500 bg-white rounded"></div>

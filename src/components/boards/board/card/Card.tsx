@@ -1,16 +1,18 @@
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
 import type { FC } from 'react'
-import { TaskBoard } from './card/TaskBoard'
-import { TaskUser } from './card/TaskUser'
-import { DateTask } from './card/DateTask'
-import { TaskType } from './card/TaskType'
-import { TaskPriority } from './card/TaskPriority'
+import { TaskBoard } from './TaskBoard'
+import { TaskUser } from './TaskUser'
+import { DateTask } from './DateTask'
+import { TaskType } from './TaskType'
+import { TaskPriority } from './TaskPriority'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useDraggable } from '@dnd-kit/core'
 import { cn } from '@/lib/utils'
 
-interface Props extends Task {}
+interface Props extends Task {
+  onClick: () => void
+}
 
 export const Card: FC<Props> = ({
   id,
@@ -24,6 +26,7 @@ export const Card: FC<Props> = ({
   assignedTo,
   createdAt,
   dueDate,
+  onClick,
 }) => {
   const { setNodeRef, listeners, attributes, transform, isDragging } =
     useDraggable({
@@ -44,6 +47,7 @@ export const Card: FC<Props> = ({
       style={{ ...style, willChange: 'transform' }}
       {...listeners}
       {...attributes}
+      onClick={onClick}
     >
       <div role="heading" className="flex gap-1 p-1.5">
         <TaskBoard

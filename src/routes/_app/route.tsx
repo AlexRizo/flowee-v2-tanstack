@@ -1,6 +1,7 @@
 import { Error404 } from '@/components/errors/Error404'
 import { Navbar } from '@/components/layout/Navbar'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { TaskView } from '@/components/tasks/views/TaskView'
 import { useWebSocket } from '@/hooks/useWebSocket'
 import { getMe } from '@/lib/api/auth'
 import type { AuthUser } from '@/lib/api/interfaces/auth.interface'
@@ -35,7 +36,7 @@ export const Route = createFileRoute('/_app')({
       })
     }
   },
-  notFoundComponent: () => <Error404/>,
+  notFoundComponent: () => <Error404 />,
 })
 
 function RouteComponent() {
@@ -71,6 +72,7 @@ function RouteComponent() {
           <Outlet />
         </div>
       </section>
+      <TaskView />
     </main>
   )
 }
