@@ -23,7 +23,6 @@ import type {
 } from '@/lib/ws/interfaces/ws-task.interface'
 import { useAuth } from '@/hooks/useAuth'
 import { Role } from '@/lib/api/interfaces/auth.interface'
-import { TaskView } from '@/components/tasks/views/TaskView'
 
 interface Column {
   id: TaskStatus

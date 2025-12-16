@@ -1,15 +1,14 @@
 import { apiGet, apiPost } from './api'
 import type {
   CreateSpecialTaskDTO,
+  GetTaskFileDTO,
   GetTasksDTO,
   Task,
+  TaskFiles,
   UploadTaskFilesDTO,
 } from './interfaces/tasks.interface'
 
-export const getTasks = async ({
-  boardId,
-  assigned = true,
-}: GetTasksDTO) => {
+export const getTasks = async ({ boardId, assigned = true }: GetTasksDTO) => {
   return await apiGet<Task[]>(`/tasks?boardId=${boardId}&assigned=${assigned}`)
 }
 
@@ -49,5 +48,19 @@ export const uploadTaskFiles = async ({
     {
       headers: { 'Content-Type': 'multipart/form-data' },
     },
+  )
+}
+
+export const getTaskFiles = async (taskId: string) => {
+  return await apiGet<TaskFiles>(`/tasks/${taskId}/uploads`)
+}
+
+export const getTaskFile = async ({
+  taskId,
+  fileId,
+  download,
+}: GetTaskFileDTO) => {
+  return await apiGet<string>(
+    `/tasks/${taskId}/uploads/${fileId}?download=${download}`,
   )
 }

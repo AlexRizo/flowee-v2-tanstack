@@ -7,6 +7,8 @@ import {
   type OrderTasks,
   TaskStatus,
   type TasksResult,
+  type TaskFiles,
+  type GetTaskFileDTO,
 } from '@/lib/api/interfaces/tasks.interface'
 import {
   createSpecialTask as createSpecialTaskApi,
@@ -14,14 +16,23 @@ import {
   getMyTasksByBoard,
   uploadTaskFiles as uploadTaskFilesApi,
   getTasks,
+  getTaskFiles,
+  getTaskFile,
 } from '@/lib/api/tasks'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { isDesigner } from '@/helpers/protected'
 import type { Role } from '@/lib/api/interfaces/auth.interface'
+import { toast } from 'sonner'
 
 interface Props {
   boardId?: string | null
+  taskId?: string | null
+}
+
+interface GetFileDto extends GetTaskFileDTO {
+  action: 'preview' | 'download'
+  fileName: string
 }
 
 const INITIAL_ORDER: OrderTasks = {
@@ -32,7 +43,7 @@ const INITIAL_ORDER: OrderTasks = {
   [TaskStatus.DONE]: [],
 }
 
-export const useTasks = ({ boardId }: Props) => {
+export const useTasks = ({ boardId, taskId }: Props) => {
   const [localOrder, setLocalOrder] = useState<OrderTasks>(INITIAL_ORDER)
   const queryClient = useQueryClient()
 
@@ -42,6 +53,13 @@ export const useTasks = ({ boardId }: Props) => {
     enabled: !!boardId,
     retry: false,
     select: (tasks) => groupTasksByStatus(tasks),
+  })
+
+  const taskFilesQuery = useQuery<TaskFiles, ApiError>({
+    queryKey: ['task-files', taskId],
+    queryFn: async () => await getTaskFiles(taskId!),
+    enabled: !!taskId,
+    retry: false,
   })
 
   useEffect(() => {
@@ -128,6 +146,27 @@ export const useTasks = ({ boardId }: Props) => {
     },
   })
 
+  const taskFile = useMutation<string, ApiError, GetFileDto>({
+    mutationFn: async ({ taskId, fileId, download }) =>
+      await getTaskFile({ taskId, fileId, download }),
+    onSuccess: (url, { action, fileName }) => {
+      if (action === 'preview') {
+        window.open(url, '_blank')
+      } else {
+        const link = document.createElement('a')
+        link.href = url
+        link.download = fileName
+        link.click()
+        link.remove()
+      }
+    },
+    onError: (error) => {
+      toast.error('Ha ocurrido un error al intentar descargar el archivo', {
+        description: error.message,
+      })
+    },
+  })
+
   return {
     tasks: {
       unorder: tasksQuery.data?.unorder || [],
@@ -137,6 +176,8 @@ export const useTasks = ({ boardId }: Props) => {
     setTask,
     tasksQuery,
     createSpecialTask,
+    taskFilesQuery,
+    taskFile,
   }
 }
 

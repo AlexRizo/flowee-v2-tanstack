@@ -93,3 +93,19 @@ export interface GetTasksDTO {
   userId?: string
   assigned?: boolean
 }
+
+export type TaskFile = {
+  id: string
+  key: string
+  type: 'REQUIRED' | 'REFERENCE'
+  fileName: string
+  taskId: string
+}
+
+export type TaskFiles = TaskFile[]
+
+export interface GetTaskFileDTO {
+  taskId: string
+  fileId: string
+  download?: boolean
+}

@@ -52,6 +52,32 @@ export const getTaskPriority = (priority: Priority): EspPriority => {
   }
 }
 
+export enum EspTaskStatus {
+  PENDING = 'Pendiente',
+  ATTENTION = 'Atención',
+  IN_PROGRESS = 'En progreso',
+  FOR_REVIEW = 'Para revisión',
+  DONE = 'Hecho',
+  UNKNOWN = 'Desconocido',
+}
+
+export const getTaskStatus = (status: TaskStatus): EspTaskStatus => {
+  switch (status) {
+    case TaskStatus.PENDING:
+      return EspTaskStatus.PENDING
+    case TaskStatus.ATTENTION:
+      return EspTaskStatus.ATTENTION
+    case TaskStatus.IN_PROGRESS:
+      return EspTaskStatus.IN_PROGRESS
+    case TaskStatus.FOR_REVIEW:
+      return EspTaskStatus.FOR_REVIEW
+    case TaskStatus.DONE:
+      return EspTaskStatus.DONE
+    default:
+      return EspTaskStatus.UNKNOWN
+  }
+}
+
 export const groupTasksByStatus = (tasks: Task[]) => {
   const order: OrderTasks = {
     [TaskStatus.PENDING]: [],
