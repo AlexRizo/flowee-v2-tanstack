@@ -76,6 +76,14 @@ export interface UploadTaskFilesDTO {
   }
 }
 
+type TaskFileType = 'REQUIRED' | 'REFERENCE'
+
+export interface UploadTaskFileDTO {
+  taskId: string
+  file: File
+  type: TaskFileType
+}
+
 export interface CreateTaskResponse {
   task: Task
   message?: string | string[]
@@ -97,7 +105,7 @@ export interface GetTasksDTO {
 export type TaskFile = {
   id: string
   key: string
-  type: 'REQUIRED' | 'REFERENCE'
+  type: TaskFileType
   fileName: string
   taskId: string
 }
@@ -108,4 +116,9 @@ export interface GetTaskFileDTO {
   taskId: string
   fileId: string
   download?: boolean
+}
+
+export interface DeleteTaskFileDTO {
+  taskId: string
+  fileId: string
 }

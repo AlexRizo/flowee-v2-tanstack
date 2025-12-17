@@ -9,6 +9,9 @@ import {
   type TasksResult,
   type TaskFiles,
   type GetTaskFileDTO,
+  type DeleteTaskFileDTO,
+  type UploadTaskFileDTO,
+  type TaskFile,
 } from '@/lib/api/interfaces/tasks.interface'
 import {
   createSpecialTask as createSpecialTaskApi,
@@ -18,6 +21,8 @@ import {
   getTasks,
   getTaskFiles,
   getTaskFile,
+  deleteTaskFile as deleteTaskFileApi,
+  uploadTaskFile as uploadTaskFileApi,
 } from '@/lib/api/tasks'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -167,6 +172,41 @@ export const useTasks = ({ boardId, taskId }: Props) => {
     },
   })
 
+  const uploadTaskFile = useMutation<TaskFile, ApiError, UploadTaskFileDTO>({
+    mutationFn: uploadTaskFileApi,
+    onSuccess: (file, { taskId }) => {
+      queryClient.setQueryData(['task-files', taskId], (oldData: TaskFiles) => {
+        if (!oldData) return oldData
+
+        return [...oldData, file]
+      })
+      toast.success('Archivo subido correctamente')
+    },
+    onError: (error) => {
+      toast.error('Ha ocurrido un error al intentar subir el archivo', {
+        description: error.message,
+      })
+    },
+  })
+
+  const deleteTaskFile = useMutation<void, ApiError, DeleteTaskFileDTO>({
+    mutationFn: async ({ taskId, fileId }) =>
+      await deleteTaskFileApi({ taskId, fileId }),
+    onSuccess: (_, { taskId, fileId }) => {
+      queryClient.setQueryData(['task-files', taskId], (oldData: TaskFiles) => {
+        if (!oldData) return oldData
+
+        return oldData.filter((file) => file.id !== fileId)
+      })
+      toast.success('Archivo eliminado correctamente')
+    },
+    onError: (error) => {
+      toast.error('Ha ocurrido un error al intentar eliminar el archivo', {
+        description: error.message,
+      })
+    },
+  })
+
   return {
     tasks: {
       unorder: tasksQuery.data?.unorder || [],
@@ -178,6 +218,8 @@ export const useTasks = ({ boardId, taskId }: Props) => {
     createSpecialTask,
     taskFilesQuery,
     taskFile,
+    uploadTaskFile,
+    deleteTaskFile,
   }
 }
 

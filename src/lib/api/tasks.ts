@@ -1,10 +1,12 @@
-import { apiGet, apiPost } from './api'
+import { apiDelete, apiGet, apiPost } from './api'
 import type {
   CreateSpecialTaskDTO,
   GetTaskFileDTO,
   GetTasksDTO,
   Task,
+  TaskFile,
   TaskFiles,
+  UploadTaskFileDTO,
   UploadTaskFilesDTO,
 } from './interfaces/tasks.interface'
 
@@ -63,4 +65,22 @@ export const getTaskFile = async ({
   return await apiGet<string>(
     `/tasks/${taskId}/uploads/${fileId}?download=${download}`,
   )
+}
+
+export const uploadTaskFile = async ({ taskId, file, type }: UploadTaskFileDTO) => {
+  const formData = new FormData()
+
+  formData.append('file', file)
+
+  return await apiPost<TaskFile>(
+    `/tasks/${taskId}/upload/${type}`,
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+  )
+}
+
+export const deleteTaskFile = async ({ taskId, fileId }: GetTaskFileDTO) => {
+  return await apiDelete<void>(`/tasks/${taskId}/uploads/${fileId}`)
 }

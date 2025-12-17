@@ -35,14 +35,22 @@ export const FileTable: FC<Props> = ({ taskId }) => {
         {taskFilesQuery.isPending ? (
           <Spinner className="mx-auto my-4" />
         ) : (
-          <FileTableContent files={referenceFiles} />
+          <FileTableContent
+            files={referenceFiles}
+            tabType="REFERENCE"
+            taskId={taskId}
+          />
         )}
       </TabsContent>
       <TabsContent value="required" className="border rounded-b">
         {taskFilesQuery.isPending ? (
           <Spinner className="mx-auto my-4" />
         ) : (
-          <FileTableContent files={requiredFiles} />
+          <FileTableContent
+            files={requiredFiles}
+            tabType="REQUIRED"
+            taskId={taskId}
+          />
         )}
       </TabsContent>
     </Tabs>
