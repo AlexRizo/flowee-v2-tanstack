@@ -20,13 +20,13 @@ export const ChatInput = ({ taskId }: Props) => {
   const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!user) return
 
-    if (e.key === 'Enter') {
-      console.log(message)
+    if (e.key === 'Enter' && message.trim() !== '') {
       appSocket.emit('send-message', {
         taskId,
         content: message,
         userId: user.id,
       })
+      setMessage('')
     }
   }
 
@@ -48,6 +48,7 @@ export const ChatInput = ({ taskId }: Props) => {
         className="rounded-full px-4 h-10 flex-1"
         onChange={onInputChange}
         onKeyDown={handleEnter}
+        value={message}
       />
       <Button variant="ghost">
         <ThumbsUp />

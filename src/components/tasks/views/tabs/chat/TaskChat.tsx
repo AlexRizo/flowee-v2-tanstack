@@ -31,7 +31,7 @@ export const TaskChat = ({ taskId }: Props) => {
     <>
       <h1 className="font-bold mb-6">Conversación</h1>
 
-      <div className="flex gap-8 flex-col h-max">
+      <div className="flex gap-8 flex-col h-[calc(100vh-200px)] overflow-y-auto">
         {messages.map((message) => (
           <ChatBubble
             key={message.id}
