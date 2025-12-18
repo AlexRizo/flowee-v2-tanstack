@@ -122,3 +122,25 @@ export interface DeleteTaskFileDTO {
   taskId: string
   fileId: string
 }
+
+export interface TaskMessage {
+  id: string
+  content: string
+  createdAt: string
+  updatedAt: string
+  user: {
+    id: string
+    name: string
+    avatar?: string
+  }
+}
+
+export interface SendMessageDTO {
+  content: string
+  userId: {
+    id: string
+    name: string
+    avatar?: string
+  }
+  date: string
+}

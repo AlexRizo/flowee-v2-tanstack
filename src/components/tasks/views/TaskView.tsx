@@ -9,8 +9,9 @@ import { useTaskViewStore } from '@/store/taskViewStore'
 import { Files, Menu, MessagesSquare } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { TabButton, type Tabs } from './tabs/TabButton'
-import { TaskDetails } from './tabs/TaskDetails'
+import { TaskDetails } from './tabs/details/TaskDetails'
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
+import { TaskChat } from './tabs/chat/TaskChat'
 
 type CloseReason = 'outside' | 'escape' | 'button' | 'programmatic'
 
@@ -55,9 +56,11 @@ export const TaskView = () => {
           <SheetDescription />
         </SheetHeader>
         <div className="flex h-full">
-          <div className="w-full p-4">
+          <div className="size-full flex flex-col p-4">
             {tab === 'Detalles' && taskCopy ? (
               <TaskDetails {...taskCopy} />
+            ) : tab === 'Chat' && taskCopy ? (
+              <TaskChat taskId={taskCopy.id} />
             ) : null}
           </div>
           <div className="flex flex-col border border-t-0 h-full w-[110px] bg-gray-50">

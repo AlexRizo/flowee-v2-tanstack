@@ -1,8 +1,8 @@
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
 import { type FC } from 'react'
-import { TaskAttribute } from './TaskAttribute'
+import { TaskAttribute } from '../TaskAttribute'
 import { Calendar, Flag, RefreshCcwDot, Rocket, UserPlus } from 'lucide-react'
-import { FileTable } from './details/FileTable'
+import { FileTable } from './FileTable'
 
 interface Props extends Task {}
 
@@ -17,7 +17,6 @@ export const TaskDetails: FC<Props> = ({
   createdAt,
   dueDate,
 }) => {
-
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">{title}</h1>

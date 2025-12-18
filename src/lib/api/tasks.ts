@@ -6,6 +6,7 @@ import type {
   Task,
   TaskFile,
   TaskFiles,
+  TaskMessage,
   UploadTaskFileDTO,
   UploadTaskFilesDTO,
 } from './interfaces/tasks.interface'
@@ -83,4 +84,8 @@ export const uploadTaskFile = async ({ taskId, file, type }: UploadTaskFileDTO) 
 
 export const deleteTaskFile = async ({ taskId, fileId }: GetTaskFileDTO) => {
   return await apiDelete<void>(`/tasks/${taskId}/uploads/${fileId}`)
+}
+
+export const getTaskChat = async (taskId: string) => {
+  return await apiGet<TaskMessage[]>(`/tasks/${taskId}/chat`)
 }
