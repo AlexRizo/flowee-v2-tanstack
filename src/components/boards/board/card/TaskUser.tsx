@@ -8,17 +8,17 @@ import type { FC } from 'react'
 
 interface Props {
   name?: string
-  imageUrl?: string
+  avatar?: string
 }
 
-export const TaskUser: FC<Props> = ({ name, imageUrl }) => {
+export const TaskUser: FC<Props> = ({ name, avatar }) => {
   return (
     <Tooltip>
       <TooltipTrigger className="flex">
         <img
           src={
-            imageUrl
-              ? `${env.VITE_CF_URL}${imageUrl}`
+            avatar
+              ? `${env.VITE_CF_URL}${avatar}`
               : '/dashboard/user/default-avatar.webp'
           }
           alt="UA"

@@ -55,7 +55,7 @@ export const Card: FC<Props> = ({
           prefix={board.prefix}
           color={board.color}
         />
-        <TaskUser name={assignedTo?.name} imageUrl={assignedTo?.avatar} />
+        <TaskUser name={assignedTo?.name} avatar={assignedTo?.avatar} />
         <DateTask date={createdAt} icon="calendar-plus" />
         <TaskType type={type} />
         <TaskPriority priority={priority} />
@@ -69,7 +69,7 @@ export const Card: FC<Props> = ({
         </p>
       </div>
       <div role="complementary" className="flex gap-1 p-1.5">
-        <TaskUser name={author?.name} imageUrl={author?.avatar} />
+        <TaskUser name={author?.name} avatar={author?.avatar} />
         <span className="flex items-center gap-1 text-xs ml-auto">
           <DateTask date={dueDate} icon="calendar-check" />
           {format(new Date(dueDate), 'eee, hh:mm a', { locale: es })}

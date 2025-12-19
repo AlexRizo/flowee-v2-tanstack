@@ -28,7 +28,7 @@ export const DesignerCard: FC<Props> = ({ id, name, username, tasksCount, avatar
           tasksCountTotal >= 10 && 'border-red-500',
         )}
       >
-        <TaskUser name={name} imageUrl={avatar} />
+        <TaskUser name={name} avatar={avatar} />
         <h1 className="text-white font-medium text-sm">
           {username + ' '}
           <span className="text-xs font-normal">({tasksCountTotal})</span>

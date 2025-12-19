@@ -40,7 +40,7 @@ export const TaskDetails: FC<Props> = ({
             type="user"
             label="Solicitante"
             value=""
-            user={{ imageUrl: author.avatar, name: author.name }}
+            user={{ avatar: author.avatar, name: author.name }}
           >
             <UserPlus size={18} className="text-gray-500" />
           </TaskAttribute>
@@ -49,7 +49,7 @@ export const TaskDetails: FC<Props> = ({
             label="Asignado a"
             value=""
             user={{
-              imageUrl: assignedTo?.avatar,
+              avatar: assignedTo?.avatar,
               name: assignedTo?.name || 'Sin asignar',
             }}
           >

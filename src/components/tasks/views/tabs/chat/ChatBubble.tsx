@@ -13,19 +13,28 @@ interface Props {
   }
   message: string
   date: string
+  showTimestamp: boolean
 }
 
-export const ChatBubble: FC<Props> = ({ user, message, date }) => {
+export const ChatBubble: FC<Props> = ({
+  user,
+  message,
+  date,
+  showTimestamp,
+}) => {
   const { user: currentUser } = useAuth()
 
+  console.log(user)
+  
   return (
     <div
       className={cn(
         'flex items-end gap-2',
         currentUser?.id === user.id ? 'flex-row-reverse' : 'flex-row',
+        showTimestamp ? 'mb-8' : 'mb-1',
       )}
     >
-      <TaskUser {...user} />
+      {showTimestamp ? <TaskUser {...user} /> : <div className="w-5" />}
       <article className="flex flex-col relative">
         <p
           className={cn(
@@ -37,14 +46,16 @@ export const ChatBubble: FC<Props> = ({ user, message, date }) => {
         >
           {message}
         </p>
-        <small
-          className={cn(
-            'text-xs text-gray-500 absolute -bottom-4.5 w-max',
-            currentUser?.id === user.id && 'right-0',
-          )}
-        >
-          {format(date, 'dd/MM/yyyy hh:mm aaaa', { locale: es })}
-        </small>
+        {showTimestamp && (
+          <small
+            className={cn(
+              'text-xs text-gray-500 absolute -bottom-4.5 w-max',
+              currentUser?.id === user.id && 'right-0',
+            )}
+          >
+            {format(date, 'dd/MM/yyyy hh:mm aaaa', { locale: es })}
+          </small>
+        )}
       </article>
     </div>
   )

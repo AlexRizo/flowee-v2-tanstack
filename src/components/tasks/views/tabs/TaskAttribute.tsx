@@ -16,7 +16,7 @@ interface Props {
   value: string
   user?: {
     name: string
-    imageUrl?: string
+    avatar?: string
   }
 }
 
@@ -72,7 +72,7 @@ export const TaskAttribute: FC<Props> = ({
         </p>
       ) : type === 'user' ? (
         <p>
-          <TaskUser imageUrl={user?.imageUrl} name={user?.name} />
+          <TaskUser avatar={user?.avatar} name={user?.name} />
         </p>
       ) : null}
     </div>

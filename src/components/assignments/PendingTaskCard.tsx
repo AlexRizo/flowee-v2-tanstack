@@ -62,7 +62,7 @@ export const PendingTaskCard: FC<Props> = ({
         </p>
       </div>
       <div role="complementary" className="flex gap-1 p-1.5">
-        <TaskUser name={author?.name} imageUrl={author?.avatar} />
+        <TaskUser name={author?.name} avatar={author?.avatar} />
         <span className="flex items-center gap-1 text-xs ml-auto">
           <DateTask date={dueDate} icon="calendar-check" />
           {format(new Date(dueDate), 'eee, hh:mm a', { locale: es })}
