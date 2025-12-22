@@ -24,8 +24,6 @@ export const ChatBubble: FC<Props> = ({
 }) => {
   const { user: currentUser } = useAuth()
 
-  console.log(user)
-  
   return (
     <div
       className={cn(
@@ -38,7 +36,7 @@ export const ChatBubble: FC<Props> = ({
       <article className="flex flex-col relative">
         <p
           className={cn(
-            'p-2 rounded-md text-wrap break-all',
+            'p-2 rounded-xl text-wrap break-all',
             currentUser?.id === user.id
               ? 'bg-gray-900 text-white rounded-br-none'
               : 'bg-gray-100 rounded-bl-none',
