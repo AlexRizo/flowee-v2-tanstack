@@ -12,6 +12,7 @@ import { TabButton, type Tabs } from './tabs/TabButton'
 import { TaskDetails } from './tabs/details/TaskDetails'
 import type { Task } from '@/lib/api/interfaces/tasks.interface'
 import { TaskChat } from './tabs/chat/TaskChat'
+import { TaskDeliveries } from './tabs/deliveries/TaskDeliveries'
 
 type CloseReason = 'outside' | 'escape' | 'button' | 'programmatic'
 
@@ -61,6 +62,8 @@ export const TaskView = () => {
               <TaskDetails {...taskCopy} />
             ) : tab === 'Chat' && taskCopy ? (
               <TaskChat taskId={taskCopy.id} />
+            ) : tab === 'Entregas' && taskCopy ? (
+              <TaskDeliveries taskId={taskCopy.id} />
             ) : null}
           </div>
           <div className="flex flex-col border border-t-0 h-full w-[110px] bg-gray-50">
