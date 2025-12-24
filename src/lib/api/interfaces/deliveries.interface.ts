@@ -8,9 +8,11 @@ export interface Version {
   id: string
   description: string
   status: VersionStatus
+  comment?: string
   attachment: string
   createdAt: string
   updatedAt: string
+  deliveryId: string
 }
 
 export interface Delivery {
@@ -31,4 +33,10 @@ export interface CreateVersionDTO {
   deliveryId: string
   description: string
   file: File
+}
+
+export interface CheckVersionDTO {
+  versionId: string
+  comment: string
+  status: VersionStatus
 }

@@ -4,12 +4,23 @@ import {
   AccordionItem,
 } from '@/components/ui/accordion'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
-import type { Delivery } from '@/lib/api/interfaces/deliveries.interface'
+import type {
+  Delivery,
+  Version,
+} from '@/lib/api/interfaces/deliveries.interface'
 import type { FC } from 'react'
-import { ChevronRight, Image, Plus } from 'lucide-react'
+import {
+  ChevronRight,
+  Download,
+  ExternalLink,
+  Image,
+  MessageSquare,
+  Plus,
+} from 'lucide-react'
 
 interface Props extends Delivery {
   onOpenVersionDialog: (deliveryId: string) => void
+  onOpenCheckVersionDialog: (version: Version) => void
 }
 
 export const DeliveriesList: FC<Props> = ({
@@ -17,6 +28,7 @@ export const DeliveriesList: FC<Props> = ({
   name,
   versions,
   onOpenVersionDialog,
+  onOpenCheckVersionDialog,
 }) => {
   return (
     <Accordion type="single" collapsible className="mb-4 border">
@@ -51,7 +63,20 @@ export const DeliveriesList: FC<Props> = ({
                 className="px-2 py-1 flex items-center gap-2"
               >
                 <Image size={16} />
-                <p>Versión {index + 1}: {version.description}</p>
+                <p>
+                  Versión {index + 1}: {version.description}
+                </p>
+                <div className="ml-auto space-x-4">
+                  <button>
+                    <Download size={16} />
+                  </button>
+                  <button>
+                    <ExternalLink size={16} />
+                  </button>
+                  <button onClick={() => onOpenCheckVersionDialog(version)}>
+                    <MessageSquare size={16} />
+                  </button>
+                </div>
               </div>
             ))
           )}

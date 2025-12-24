@@ -7,9 +7,12 @@ import {
 import type {
   CreateDeliveryDTO,
   CreateVersionDTO as CreateVersionDTOInterface,
+  CheckVersionDTO,
   Delivery,
   Version,
 } from '@/lib/api/interfaces/deliveries.interface'
+import { checkVersion } from '@/lib/api/versions'
+import { useTaskViewStore } from '@/store/taskViewStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -19,6 +22,7 @@ interface CreateVersionDTO extends CreateVersionDTOInterface {
 
 export const useDeliveries = (taskId?: string) => {
   const queryClient = useQueryClient()
+  const { task } = useTaskViewStore()
 
   const deliveriesQuery = useQuery<Delivery[], ApiError>({
     queryKey: ['deliveries', taskId],
@@ -80,9 +84,47 @@ export const useDeliveries = (taskId?: string) => {
     },
   })
 
+  const checkVersionMutation = useMutation<Version, ApiError, CheckVersionDTO>({
+    mutationFn: checkVersion,
+    onSuccess: (version) => {
+      const taskId = task?.id
+
+      toast.success('Version revisada exitosamente')
+
+      if (!taskId) {
+        queryClient.invalidateQueries({
+          queryKey: ['deliveries'],
+        })
+        return
+      }
+
+      queryClient.setQueryData(
+        ['deliveries', taskId],
+        (oldData: Delivery[]) => {
+          if (!oldData) return []
+
+          return oldData.map((delivery) => {
+            if (delivery.id !== version.deliveryId) return delivery
+
+            return {
+              ...delivery,
+              versions: delivery.versions.map((v) =>
+                v.id === version.id ? version : v,
+              ),
+            }
+          })
+        },
+      )
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   return {
     deliveriesQuery,
     createDelivery: createDeliveryMutation,
     createVersion: createVersionMutation,
+    checkVersion: checkVersionMutation,
   }
 }
