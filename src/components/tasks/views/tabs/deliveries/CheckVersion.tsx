@@ -9,31 +9,21 @@ import {
 } from '@/components/ui/dialog'
 import {
   Form,
-  FormDescription,
   FormField,
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useDeliveries } from '@/hooks/useDeliveries'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useEffect } from 'react'
 import {
-  VersionStatus,
   type Version,
 } from '@/lib/api/interfaces/deliveries.interface'
 import { updateVersionSchema } from './schemas/delivery.schema'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'

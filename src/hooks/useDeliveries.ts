@@ -71,10 +71,17 @@ export const useDeliveries = (taskId?: string) => {
         ['deliveries', taskId],
         (oldData: Delivery[]) => {
           if (!oldData) return []
-          const delivery = oldData.find((d) => d.id === dto.deliveryId)
-          if (!delivery) return oldData
-          delivery.versions = [...delivery.versions, version]
-          return [...oldData, delivery]
+
+          return oldData.map((d) => {
+            if (d.id !== dto.deliveryId) {
+              return d
+            }
+
+            return {
+              ...d,
+              versions: [...d.versions, version],
+            }
+          })
         },
       )
       toast.success('Version creada exitosamente')

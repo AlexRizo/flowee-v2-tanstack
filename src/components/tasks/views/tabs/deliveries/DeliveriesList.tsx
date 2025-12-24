@@ -4,11 +4,12 @@ import {
   AccordionItem,
 } from '@/components/ui/accordion'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
-import type {
-  Delivery,
-  Version,
+import {
+  VersionStatus,
+  type Delivery,
+  type Version,
 } from '@/lib/api/interfaces/deliveries.interface'
-import type { FC } from 'react'
+import { useMemo, type FC } from 'react'
 import {
   ChevronRight,
   Download,
@@ -17,6 +18,7 @@ import {
   MessageSquare,
   Plus,
 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Props extends Delivery {
   onOpenVersionDialog: (deliveryId: string) => void
@@ -30,6 +32,18 @@ export const DeliveriesList: FC<Props> = ({
   onOpenVersionDialog,
   onOpenCheckVersionDialog,
 }) => {
+  const anyVersionPending = useMemo(() => {
+    return versions?.some((version) => version.status === VersionStatus.PENDING)
+  }, [versions])
+
+  const anyVersionAccepted = useMemo(() => {
+    return versions?.some(
+      (version) => version.status === VersionStatus.ACCEPTED,
+    )
+  }, [versions])
+
+  console.log(name, anyVersionPending, anyVersionAccepted)
+
   return (
     <Accordion type="single" collapsible className="mb-4 border">
       <AccordionItem value={id}>
@@ -41,7 +55,14 @@ export const DeliveriesList: FC<Props> = ({
             />
             <span className="font-medium">{name}</span>
           </AccordionPrimitive.Trigger>
-          <button className="flex items-center gap-1 hover:underline cursor-pointer">
+          <button
+            className={cn(
+              'flex items-center gap-1 hover:underline cursor-pointer',
+              (anyVersionPending || anyVersionAccepted) &&
+                'opacity-50 cursor-not-allowed',
+            )}
+            disabled={anyVersionPending || anyVersionAccepted}
+          >
             <p
               className="font-medium text-nowrap"
               onClick={() => onOpenVersionDialog(id)}
