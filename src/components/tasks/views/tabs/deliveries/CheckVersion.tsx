@@ -83,10 +83,10 @@ export const CheckVersion = ({ version, open, onOpenChange }: Props) => {
                 name="comment"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Descripción corta</FormLabel>
+                    <FormLabel>Motivo</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Escribe la descripción para esta versión"
+                        placeholder="Escribe un motivo..."
                         className="resize-none"
                         {...field}
                       />

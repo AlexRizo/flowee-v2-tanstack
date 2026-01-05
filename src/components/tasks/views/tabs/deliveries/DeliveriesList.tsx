@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Download,
   ExternalLink,
+  Eye,
   Image,
   MessageSquare,
   Plus,
@@ -41,8 +42,6 @@ export const DeliveriesList: FC<Props> = ({
       (version) => version.status === VersionStatus.ACCEPTED,
     )
   }, [versions])
-
-  console.log(name, anyVersionPending, anyVersionAccepted)
 
   return (
     <Accordion type="single" collapsible className="mb-4 border">
@@ -81,11 +80,17 @@ export const DeliveriesList: FC<Props> = ({
             versions.reverse().map((version, index) => (
               <div
                 key={version.id}
-                className="px-2 py-1 flex items-center gap-2"
+                className={cn(
+                  'px-2 py-1 flex items-center gap-2',
+                  version.status === VersionStatus.ACCEPTED && 'bg-green-50',
+                  version.status === VersionStatus.REJECTED &&
+                    'bg-red-50 opacity-50',
+                )}
               >
                 <Image size={16} />
                 <p>
                   Versión {index + 1}: {version.description}
+                  {index}
                 </p>
                 <div className="ml-auto space-x-4">
                   <button>
@@ -94,9 +99,15 @@ export const DeliveriesList: FC<Props> = ({
                   <button>
                     <ExternalLink size={16} />
                   </button>
-                  <button onClick={() => onOpenCheckVersionDialog(version)}>
-                    <MessageSquare size={16} />
+                  <button>
+                    <Eye size={16} />
                   </button>
+                  {version.status !== VersionStatus.REJECTED &&
+                    index === versions.length - 1 && (
+                      <button onClick={() => onOpenCheckVersionDialog(version)}>
+                        <MessageSquare size={16} />
+                      </button>
+                    )}
                 </div>
               </div>
             ))

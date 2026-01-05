@@ -1,4 +1,4 @@
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Button } from '@/components/ui/button'
 import { VersionStatus } from '@/lib/api/interfaces/deliveries.interface'
 import { cn } from '@/lib/utils'
 import { GitPullRequestClosed, GitPullRequestCreate } from 'lucide-react'
@@ -20,33 +20,21 @@ export const SelectVersionStatus: FC<Props> = ({ value, onChange }) => {
   }
 
   return (
-    <ToggleGroup
-      type="single"
-      value={status}
-      onValueChange={handleOnChange}
-      spacing={2}
-      className=""
-    >
-      <ToggleGroupItem
-        value={VersionStatus.ACCEPTED}
-        className={cn(
-          'w-full',
-          status === VersionStatus.ACCEPTED && '!bg-purple-500 !text-white',
-        )}
+    <div className="w-full grid grid-cols-2 gap-2">
+      <Button
+        className={cn(status === VersionStatus.ACCEPTED && 'bg-violet-500')}
+        onClick={() => handleOnChange(VersionStatus.ACCEPTED)}
       >
         <GitPullRequestCreate />
         Aceptar
-      </ToggleGroupItem>
-      <ToggleGroupItem
-        value={VersionStatus.REJECTED}
-        className={cn(
-          'w-full',
-          status === VersionStatus.REJECTED && '!bg-red-500 !text-white',
-        )}
+      </Button>
+      <Button
+        className={cn(status === VersionStatus.REJECTED && 'bg-red-500')}
+        onClick={() => handleOnChange(VersionStatus.REJECTED)}
       >
         <GitPullRequestClosed />
         Rechazar
-      </ToggleGroupItem>
-    </ToggleGroup>
+      </Button>
+    </div>
   )
 }
