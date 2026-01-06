@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useVersion } from '@/hooks/useVersion'
+import { ProtectedItem } from '@/components/protected/ProtectedItem'
 
 interface Props extends Delivery {
   onOpenVersionDialog: (deliveryId: string) => void
@@ -106,26 +107,27 @@ export const DeliveriesList: FC<Props> = ({
                 </p>
                 <div className="ml-auto space-x-4">
                   <button>
-                    <Download
-                      size={16}
-                      onClick={() => handleVersionFile(version.id, true)}
-                    />
-                  </button>
-                  <button>
                     <ExternalLink
                       size={16}
                       onClick={() => handleVersionFile(version.id, false)}
                     />
                   </button>
+                  <button>
+                    <Download
+                      size={16}
+                      onClick={() => handleVersionFile(version.id, true)}
+                    />
+                  </button>
                   <button onClick={() => onOpenPreviewVersionDialog(version)}>
                     <Eye size={16} />
                   </button>
-                  {version.status !== VersionStatus.REJECTED &&
-                    index === versions.length - 1 && (
+                  <ProtectedItem role="pub-des-manager">
+                    {index === versions.length - 1 && (
                       <button onClick={() => onOpenCheckVersionDialog(version)}>
                         <MessageSquare size={16} />
                       </button>
                     )}
+                  </ProtectedItem>
                 </div>
               </div>
             ))

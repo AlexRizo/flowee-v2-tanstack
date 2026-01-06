@@ -3,6 +3,7 @@ import { FileItem } from './FileItem'
 import type { TaskFiles } from '@/lib/api/interfaces/tasks.interface'
 import { Plus } from 'lucide-react'
 import { useTasks } from '@/hooks/useTasks'
+import { ProtectedItem } from '@/components/protected/ProtectedItem'
 
 interface Props {
   files: TaskFiles
@@ -32,7 +33,7 @@ export const FileTableContent: FC<Props> = ({ files, tabType, taskId }) => {
         files.map((file) => <FileItem {...file} key={file.key} />)
       )}
       {files.length < 5 && (
-        <>
+        <ProtectedItem role="pub-des-manager">
           <button
             className="text-center text-gray-900 hover:text-violet-500 cursor-pointer text-sm py-1 flex items-center mx-auto"
             onClick={() => fileRef.current?.click()}
@@ -46,7 +47,7 @@ export const FileTableContent: FC<Props> = ({ files, tabType, taskId }) => {
             onChange={handleFileChange}
             ref={fileRef}
           />
-        </>
+        </ProtectedItem>
       )}
     </div>
   )

@@ -57,12 +57,14 @@ export const Sidebar = () => {
             label="Mis tareas"
             collapsed={isCollapsed}
           />
-          <Navlink
-            to="/solicitudes"
-            icon="clipboard-list"
-            label="Solicitudes"
-            collapsed={isCollapsed}
-          />
+          <ProtectedItem role="managers">
+            <Navlink
+              to="/solicitudes"
+              icon="clipboard-list"
+              label="Solicitudes"
+              collapsed={isCollapsed}
+            />
+          </ProtectedItem>
         </div>
         <div className="flex flex-col gap-2">
           <small

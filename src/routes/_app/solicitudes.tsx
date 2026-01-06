@@ -1,3 +1,4 @@
+import { Error404 } from '@/components/errors/Error404'
 import { DndContainer } from '@/components/requests/DndContainer'
 import { isManager } from '@/helpers/protected'
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
@@ -11,6 +12,7 @@ export const Route = createFileRoute('/_app/solicitudes')({
 
     if (!isManager(user.role)) throw notFound()
   },
+  notFoundComponent: () => <Error404 />,
 })
 
 function RouteComponent() {

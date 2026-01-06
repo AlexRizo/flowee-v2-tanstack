@@ -9,6 +9,7 @@ import { CreateVersion } from './CreateVersion'
 import { CheckVersion } from './CheckVersion'
 import type { Version } from '@/lib/api/interfaces/deliveries.interface'
 import { PreviewVersionDetails } from './dialogs/PreviewVersionDetails'
+import { ProtectedItem } from '@/components/protected/ProtectedItem'
 
 interface Props {
   taskId: string
@@ -23,7 +24,8 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
   const [openVersionDialog, setOpenVersionDialog] = useState(false)
   const [openCheckVersionDialog, setOpenCheckVersionDialog] = useState(false)
 
-  const [openPreviewVersionDialog, setOpenPreviewVersionDialog] = useState(false)
+  const [openPreviewVersionDialog, setOpenPreviewVersionDialog] =
+    useState(false)
 
   const handleCreateVersion = (deliveryId: string) => {
     setDeliveryId(deliveryId)
@@ -42,22 +44,26 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
 
   return (
     <>
-      <div className="flex items-center mb-6">
+      <div className="flex items-center">
         <h1 className="font-bold mr-4">Listado de entregas</h1>
-        <AddDelivery taskId={taskId}>
-          <Button size="sm">
-            <Plus /> Nueva
-          </Button>
-        </AddDelivery>
+        <ProtectedItem role="pub-des-manager">
+          <AddDelivery taskId={taskId}>
+            <Button size="sm">
+              <Plus /> Nueva
+            </Button>
+          </AddDelivery>
+        </ProtectedItem>
       </div>
-      <article className="bg-amber-50 rounded-md p-4">
-        <h2 className="font-medium">Pro Tip</h2>
-        <p className="text-sm">
-          Crea todas las entregas necesarias. Nombra cada una de forma simple y
-          descriptiva, pensando en que puedes generar múltiples entregas para la
-          misma tarea.
-        </p>
-      </article>
+      <ProtectedItem role="pub-des-manager">
+        <article className="bg-amber-50 rounded-md p-4 my-6">
+          <h2 className="font-medium">Pro Tip</h2>
+          <p className="text-sm">
+            Crea todas las entregas necesarias. Nombra cada una de forma simple
+            y descriptiva, pensando en que puedes generar múltiples entregas
+            para la misma tarea.
+          </p>
+        </article>
+      </ProtectedItem>
       {deliveriesQuery.isPending ? (
         <div className="flex items-center justify-center mt-6">
           <Spinner />

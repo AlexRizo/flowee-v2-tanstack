@@ -1,3 +1,4 @@
+import { ProtectedItem } from '@/components/protected/ProtectedItem'
 import { useTasks } from '@/hooks/useTasks'
 import type { TaskFile } from '@/lib/api/interfaces/tasks.interface'
 import { Download, ExternalLink, File, Trash } from 'lucide-react'
@@ -42,7 +43,9 @@ export const FileItem: FC<Props> = ({ id, fileName, taskId }) => {
       <div className="flex gap-3">
         <ExternalLink onClick={handlePreviewFile} size={16} />
         <Download onClick={handleDownloadFile} size={16} />
-        <Trash onClick={handleDeleteFile} size={16} />
+        <ProtectedItem role="pub-des-manager">
+          <Trash onClick={handleDeleteFile} size={16} />
+        </ProtectedItem>
       </div>
     </div>
   )
