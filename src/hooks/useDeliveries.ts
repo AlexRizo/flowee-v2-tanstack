@@ -41,7 +41,7 @@ export const useDeliveries = (taskId?: string) => {
         ['deliveries', dto.taskId],
         (oldData: Delivery[]) => {
           if (!oldData) return []
-          return [...oldData, delivery]
+          return [...oldData, {...delivery, versions: []}]
         },
       )
       toast.success('Entrega creada exitosamente')
@@ -77,6 +77,7 @@ export const useDeliveries = (taskId?: string) => {
               return d
             }
 
+            console.log(oldData)
             return {
               ...d,
               versions: [...d.versions, version],
