@@ -20,10 +20,12 @@ import {
   Plus,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useVersion } from '@/hooks/useVersion'
 
 interface Props extends Delivery {
   onOpenVersionDialog: (deliveryId: string) => void
   onOpenCheckVersionDialog: (version: Version) => void
+  onOpenPreviewVersionDialog: (version: Version) => void
 }
 
 export const DeliveriesList: FC<Props> = ({
@@ -32,7 +34,10 @@ export const DeliveriesList: FC<Props> = ({
   versions,
   onOpenVersionDialog,
   onOpenCheckVersionDialog,
+  onOpenPreviewVersionDialog,
 }) => {
+  const { versionFileMutation } = useVersion()
+
   const anyVersionPending = useMemo(() => {
     return versions?.some((version) => version.status === VersionStatus.PENDING)
   }, [versions])
@@ -42,6 +47,13 @@ export const DeliveriesList: FC<Props> = ({
       (version) => version.status === VersionStatus.ACCEPTED,
     )
   }, [versions])
+
+  const handleVersionFile = (versionId: string, download: boolean) => {
+    versionFileMutation.mutate({
+      versionId,
+      download,
+    })
+  }
 
   return (
     <Accordion type="single" collapsible className="mb-4 border">
@@ -94,12 +106,18 @@ export const DeliveriesList: FC<Props> = ({
                 </p>
                 <div className="ml-auto space-x-4">
                   <button>
-                    <Download size={16} />
+                    <Download
+                      size={16}
+                      onClick={() => handleVersionFile(version.id, true)}
+                    />
                   </button>
                   <button>
-                    <ExternalLink size={16} />
+                    <ExternalLink
+                      size={16}
+                      onClick={() => handleVersionFile(version.id, false)}
+                    />
                   </button>
-                  <button>
+                  <button onClick={() => onOpenPreviewVersionDialog(version)}>
                     <Eye size={16} />
                   </button>
                   {version.status !== VersionStatus.REJECTED &&

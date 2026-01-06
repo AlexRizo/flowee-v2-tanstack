@@ -40,3 +40,8 @@ export interface CheckVersionDTO {
   comment: string
   status: VersionStatus
 }
+
+export interface GetVersionFileDTO {
+  versionId: string
+  download: boolean
+}

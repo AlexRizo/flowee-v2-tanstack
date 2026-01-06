@@ -8,6 +8,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { CreateVersion } from './CreateVersion'
 import { CheckVersion } from './CheckVersion'
 import type { Version } from '@/lib/api/interfaces/deliveries.interface'
+import { PreviewVersionDetails } from './dialogs/PreviewVersionDetails'
 
 interface Props {
   taskId: string
@@ -22,6 +23,8 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
   const [openVersionDialog, setOpenVersionDialog] = useState(false)
   const [openCheckVersionDialog, setOpenCheckVersionDialog] = useState(false)
 
+  const [openPreviewVersionDialog, setOpenPreviewVersionDialog] = useState(false)
+
   const handleCreateVersion = (deliveryId: string) => {
     setDeliveryId(deliveryId)
     setOpenVersionDialog(!openVersionDialog)
@@ -30,6 +33,11 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
   const handleCheckVersion = (version: Version) => {
     setVersion(version)
     setOpenCheckVersionDialog(!openCheckVersionDialog)
+  }
+
+  const handlePreviewVersionDialog = (version: Version) => {
+    setVersion(version)
+    setOpenPreviewVersionDialog(!openPreviewVersionDialog)
   }
 
   return (
@@ -65,6 +73,7 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
                 {...delivery}
                 onOpenVersionDialog={handleCreateVersion}
                 onOpenCheckVersionDialog={handleCheckVersion}
+                onOpenPreviewVersionDialog={handlePreviewVersionDialog}
               />
             ))
           )}
@@ -80,6 +89,11 @@ export const TaskDeliveries: FC<Props> = ({ taskId }) => {
         version={version}
         open={openCheckVersionDialog}
         onOpenChange={setOpenCheckVersionDialog}
+      />
+      <PreviewVersionDetails
+        version={version}
+        open={openPreviewVersionDialog}
+        onOpenChange={setOpenPreviewVersionDialog}
       />
     </>
   )
