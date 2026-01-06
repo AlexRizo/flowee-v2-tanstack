@@ -103,7 +103,6 @@ export const DeliveriesList: FC<Props> = ({
                 <Image size={16} />
                 <p>
                   Versión {index + 1}: {version.description}
-                  {index}
                 </p>
                 <div className="ml-auto space-x-4">
                   <button>

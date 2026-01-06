@@ -17,8 +17,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { PendingTaskCard } from '../PendingTaskCard'
 import { appSocket } from '@/lib/ws/appSocket'
 import { useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { MyCard } from '../MyCard'
 
 export const DndContainer = () => {
+  const { user } = useAuth()
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 },
@@ -75,6 +79,7 @@ export const DndContainer = () => {
       <section className="flex flex-row gap-8 my-8">
         <PendingColumn pendingTasks={pendingTasksQuery.data || []} />
         <div role="grid" className="h-max flex flex-row flex-wrap gap-2">
+          <MyCard {...user!} />
           {boardDesigners.users?.map((designer) => (
             <DesignerCard key={designer.id} {...designer} />
           ))}
