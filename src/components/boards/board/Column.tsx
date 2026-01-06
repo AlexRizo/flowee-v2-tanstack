@@ -3,7 +3,7 @@ import { TaskStatus, type Task } from '@/lib/api/interfaces/tasks.interface'
 import { cn } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
-import { type FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { Card } from './card/Card'
 import { useDroppable } from '@dnd-kit/core'
 import { ProtectedItem } from '@/components/protected/ProtectedItem'
@@ -24,8 +24,17 @@ export const Column: FC<Props> = ({
   name,
   items = [],
 }) => {
-  const { setNodeRef, isOver } = useDroppable({ id })
+  const { setNodeRef, isOver, active } = useDroppable({ id })
   const { setTask } = useTaskViewStore()
+
+  useEffect(() => {
+    if (!active) return
+    console.log(
+      items.some(
+        (exists) => exists.id === (active?.id as string)?.split('|')[1],
+      ),
+    )
+  }, [active])
 
   return (
     <div className={cn('rounded-md h-max min-w-62.5 p-2', columnBackground)}>
