@@ -86,6 +86,10 @@ export const DndContainer = () => {
     if (tasksQuery.isSuccess && tasks.unorder.length === 0) {
       toast.info('No se encontraron tareas para este tablero.')
     }
+
+    if (tasksQuery.isError) {
+      toast.error(tasksQuery.error.message)
+    }
   }, [tasksQuery.data])
 
   const handleDragStart = (event: DragStartEvent) => {
